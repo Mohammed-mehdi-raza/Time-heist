@@ -1,18 +1,19 @@
 package com.timeheist.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.timeheist.backend.entity.PlayerProfile;
 import com.timeheist.backend.exception.ResourceNotFoundException;
 import com.timeheist.backend.repository.ProfileRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProfileService {
 
-    @Autowired
-    private ProfileRepo profileRepo;
+    private final ProfileRepo profileRepo;
 
     public PlayerProfile createPlayer(PlayerProfile player) {
         try {

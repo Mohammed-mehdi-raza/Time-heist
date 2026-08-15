@@ -1,9 +1,8 @@
 package com.timeheist.backend.dto;
 
-import java.security.Timestamp;
+
 import java.time.LocalDateTime;
 
-import com.timeheist.backend.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
