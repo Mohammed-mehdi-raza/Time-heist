@@ -8,9 +8,14 @@
 
     <div class="form-shell">
       @if (flag === 'login') {
-        <app-login (registerRequested)="flag = 'register'"></app-login>
-      } @else {
+        <app-login
+          (registerRequested)="flag = 'register'"
+          (loggedIn)="switchToHome()"
+        ></app-login>
+      } @else if (flag === 'register') {
         <app-register (loginRequested)="flag = 'login'"></app-register>
+      } @else {
+        <app-home (logoutRequested)="logoutFromHome()"></app-home>
       }
     </div>
   </div>

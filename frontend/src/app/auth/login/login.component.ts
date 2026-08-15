@@ -1,6 +1,8 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { AuthService } from '../../core/services/auth.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -10,9 +12,10 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 })
 export class LoginComponent {
   @Output() registerRequested = new EventEmitter<void>();
+  @Output() loggedIn = new EventEmitter<void>();
 
   private formBuilder = inject(FormBuilder);
-  // private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   switchToRegister(): void {
     this.registerRequested.emit();
@@ -22,11 +25,11 @@ export class LoginComponent {
   errorMessage = '';
 
   loginForm = this.formBuilder.nonNullable.group({
-    email: [
+    username: [
       '',
       [
         Validators.required,
-        Validators.email
+        Validators.minLength(3)
       ]
     ],
     password: [
@@ -38,8 +41,8 @@ export class LoginComponent {
     ]
   });
 
-  get email() {
-    return this.loginForm.controls.email;
+  get username() {
+    return this.loginForm.controls.username;
   }
 
   get password() {
@@ -56,16 +59,18 @@ export class LoginComponent {
 
     this.isSubmitting = true;
 
-    // this.authService.login(this.loginForm.getRawValue()).subscribe({
-    //   next: () => {
-    //     this.isSubmitting = false;
-    //     this.router.navigate(['/home']);
-    //   },
-    //   error: error => {
-    //     this.isSubmitting = false;
-    //     this.errorMessage =
-    //       error.error?.message || 'Invalid email or password';
-    //   }
-    // });
+    this.authService.login(this.loginForm.getRawValue()).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.loggedIn.emit();
+      },
+      error: error => {
+        this.isSubmitting = false;
+        this.errorMessage =
+          error.error?.message ||
+          error.error?.data?.message ||
+          'Invalid username or password';
+      }
+    });
   }
 }
