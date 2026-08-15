@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.auth-parent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-image: url('/assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.auth-content {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.diamond-icon {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  margin-right:2rem;
+}
+
+.title {
+  font-size: 5rem;
+  text-transform: uppercase;
+  color: white;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+.heist {
+  color: red;
+}
+
+.text {
+  color: white;
+  text-transform: uppercase;
+  font-size: 1rem;
+  text-align: center;
+  letter-spacing: 0.12em;
+  margin-top: 0.75rem;
+}
