@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.timeheist.backend.dto.LoginRequest;
 import com.timeheist.backend.dto.RegisterRequest;
+import com.timeheist.backend.entity.User;
 import com.timeheist.backend.repository.UserRepository;
 
 @Service
@@ -51,8 +52,6 @@ public class AuthService {
         user.setPassword(
                 passwordEncoder.encode(request.getPassword())
         );
-
-        user.setRole("USER");
 
         userRepository.save(user);
     }
