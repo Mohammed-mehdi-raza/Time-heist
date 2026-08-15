@@ -1,5 +1,8 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +15,8 @@ export class RegisterComponent {
   @Output() loginRequested = new EventEmitter<void>();
 
   private formBuilder = inject(FormBuilder);
-  // private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   switchToLogin(): void {
     this.loginRequested.emit();
@@ -24,11 +28,11 @@ export class RegisterComponent {
 
   registerForm = this.formBuilder.nonNullable.group(
     {
-      name: [
+      username: [
         '',
         [
           Validators.required,
-          Validators.minLength(2),
+          Validators.minLength(3),
           Validators.maxLength(50)
         ]
       ],
@@ -50,8 +54,8 @@ export class RegisterComponent {
     }
   );
 
-  get name() {
-    return this.registerForm.controls.name;
+  get username() {
+    return this.registerForm.controls.username;
   }
 
   get email() {
@@ -62,8 +66,6 @@ export class RegisterComponent {
     return this.registerForm.controls.password;
   }
 
-  
-
   register(): void {
     this.errorMessage = '';
     this.successMessage = '';
@@ -73,26 +75,26 @@ export class RegisterComponent {
       return;
     }
 
-    const { ...request } =
-      this.registerForm.getRawValue();
+    const request = this.registerForm.getRawValue();
 
     this.isSubmitting = true;
 
-    // this.authService.register(request).subscribe({
-    //   next: () => {
-    //     this.isSubmitting = false;
-    //     this.successMessage =
-    //       'Registration successful. Redirecting to login...';
+    this.authService.register(request).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.successMessage =
+          'Registration successful. Redirecting to login...';
 
-    //     setTimeout(() => {
-    //       this.router.navigate(['/login']);
-    //     }, 1200);
-    //   },
-    //   error: error => {
-    //     this.isSubmitting = false;
-    //     this.errorMessage =
-    //       error.error?.message || 'Registration failed';
-    //   }
-    // });
+        setTimeout(() => {
+          this.loginRequested.emit();
+          this.registerForm.reset();
+        }, 1200);
+      },
+      error: error => {
+        this.isSubmitting = false;
+        this.errorMessage =
+          error.error?.message || 'Registration failed';
+      }
+    });
   }
 }

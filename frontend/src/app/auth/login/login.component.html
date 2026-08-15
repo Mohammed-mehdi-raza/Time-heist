@@ -5,25 +5,25 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="username">username</label>
 
             <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="Enter your email"
-              autocomplete="email"
-              [class.invalid]="email.invalid && email.touched"
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="Enter your username"
+              autocomplete="username"
+              [class.invalid]="username.invalid && username.touched"
             />
 
-            @if (email.invalid && email.touched) {
+            @if (username.invalid && username.touched) {
               <div class="field-error">
-                @if (email.hasError("required")) {
-                  <span>Email is required.</span>
+                @if (username.hasError("required")) {
+                  <span>Username is required.</span>
                 }
 
-                @if (email.hasError("email")) {
-                  <span>Enter a valid email address.</span>
+                @if (username.hasError("minlength")) {
+                  <span>Username must contain at least 3 characters.</span>
                 }
               </div>
             }

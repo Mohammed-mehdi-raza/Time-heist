@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
+
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +10,9 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  @Output() logoutRequested = new EventEmitter<void>();
+
+  private readonly authService = inject(AuthService);
 
   play(): void {
     console.log('Play clicked');
@@ -27,7 +31,7 @@ export class HomeComponent {
   }
 
   logout(): void {
-    console.log('Logout clicked');
+    this.authService.logout();
+    this.logoutRequested.emit();
   }
-
 }

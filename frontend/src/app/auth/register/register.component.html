@@ -8,29 +8,29 @@
         novalidate
       >
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="username">Username</label>
 
           <input
-            id="name"
+            id="username"
             type="text"
-            formControlName="name"
-            placeholder="Enter your name"
-            autocomplete="name"
-            [class.invalid]="name.invalid && name.touched"
+            formControlName="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            [class.invalid]="username.invalid && username.touched"
           />
 
-          @if (name.invalid && name.touched) {
+          @if (username.invalid && username.touched) {
             <div class="field-error">
-              @if (name.hasError('required')) {
-                <span>Name is required.</span>
+              @if (username.hasError('required')) {
+                <span>Username is required.</span>
               }
 
-              @if (name.hasError('minlength')) {
-                <span>Name must contain at least 2 characters.</span>
+              @if (username.hasError('minlength')) {
+                <span>Username must contain at least 3 characters.</span>
               }
 
-              @if (name.hasError('maxlength')) {
-                <span>Name cannot exceed 50 characters.</span>
+              @if (username.hasError('maxlength')) {
+                <span>Username cannot exceed 50 characters.</span>
               }
             </div>
           }
