@@ -12,9 +12,15 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -28,7 +34,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false, length = 255)
-    private String passwordHash;
+    private String password;
 
     @Column(nullable = false, length = 20)
     private String status = "ACTIVE";
@@ -42,7 +48,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private PlayerProfile playerProfile;
 
-    @PrePersist
+	@PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         createdAt = now;
