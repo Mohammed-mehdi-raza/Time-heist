@@ -5,7 +5,14 @@
       <div class="title">Time <span class="heist">Heist</span></div>
       <div class="text">Steal the Diamond and Escape.</div>
     </div>
-    <app-home></app-home>
+
+    <div class="form-shell">
+      @if (flag === 'login') {
+        <app-login (registerRequested)="flag = 'register'"></app-login>
+      } @else {
+        <app-register (loginRequested)="flag = 'login'"></app-register>
+      }
+    </div>
   </div>
 </div>
 

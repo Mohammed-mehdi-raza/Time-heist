@@ -1,0 +1,136 @@
+.register-container {
+    margin: 20px;
+    width: 380px;
+    height: 300px;
+    // overflow-x:scroll;
+}
+
+.auth-content {
+  width: 100%;
+  max-width: 460px;
+  text-align: center;
+}
+
+.auth-card {
+  padding: 0px 32px;
+  text-align: left;
+}
+
+h2 {
+  margin: 0;
+  color: #f4c430;
+  font-size: 28px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  color: #00e5ff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ff2e4c;
+  border-radius: 8px;
+  outline: none;
+  color: #f4c430;
+  font-size: 15px;
+  background:rgba(20, 20, 20, 0.8);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+
+  &.invalid {
+    border-color: #dc2626;
+  }
+}
+
+.field-error {
+  margin-top: 6px;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.server-error {
+  margin-bottom: 16px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 14px;
+  text-align: center;
+}
+
+.success-message {
+  margin-bottom: 16px;
+  padding: 10px;
+  border-radius: 6px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 14px;
+  text-align: center;
+}
+
+button {
+  width: 109%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #1d4ed8;
+  }
+
+  &:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+  }
+}
+
+.bottom-text {
+  margin: 22px 0 0;
+  color: #f4c430;
+  font-size: 14px;
+  text-align: center;
+
+  a {
+    color: #00e5ff;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 16px;
+  }
+
+  .auth-card {
+    padding: 24px 20px;
+  }
+
+  .app-name {
+    font-size: 34px;
+  }
+}

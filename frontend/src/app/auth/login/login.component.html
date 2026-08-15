@@ -1,1 +1,78 @@
-<p>login works!</p>
+<div class="loginContainer">
+    <div class="auth-content">
+      <div class="auth-card">
+        <h2>Login</h2>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+          <div class="form-group">
+            <label for="email">Email</label>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              [class.invalid]="email.invalid && email.touched"
+            />
+
+            @if (email.invalid && email.touched) {
+              <div class="field-error">
+                @if (email.hasError("required")) {
+                  <span>Email is required.</span>
+                }
+
+                @if (email.hasError("email")) {
+                  <span>Enter a valid email address.</span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.invalid]="password.invalid && password.touched"
+            />
+
+            @if (password.invalid && password.touched) {
+              <div class="field-error">
+                @if (password.hasError("required")) {
+                  <span>Password is required.</span>
+                }
+
+                @if (password.hasError("minlength")) {
+                  <span>Password must contain at least 6 characters.</span>
+                }
+              </div>
+            }
+          </div>
+
+          @if (errorMessage) {
+            <div class="server-error">
+              {{ errorMessage }}
+            </div>
+          }
+
+          <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
+            @if (isSubmitting) {
+              Logging in...
+            } @else {
+              Login
+            }
+          </button>
+        </form>
+
+        <p class="bottom-text">
+          Do not have an account?
+          <a href="javascript:void(0)" (click)="switchToRegister()">Register</a>
+        </p>
+      </div>
+    </div>
+</div>
