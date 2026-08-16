@@ -21,7 +21,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) gameMap!: GameMap;
 
-  playerScale = 1.5;
+  playerScale = 1.8;
 
   frame = 0;
 
@@ -29,24 +29,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private lastDirection: Direction | null = null;
   private lastFrameTime = 0;
 
-  private readonly basePath =
-    'assets/sprites/Character sprite PNG/PNG Sequences/Walking/';
+  private readonly frameCount = 20;
+  private readonly animationSpeed = 80;
 
-  private readonly rightFrames = Array.from(
-    { length: 24 },
-    (_, i) =>
-      `${this.basePath}0_Fallen_Angels_Walking_${String(i).padStart(3, '0')}.png`
-  );
+  private readonly assetsRoot = 'assets';
+  private readonly charFolder = 'Newchar';
 
-  private readonly upFrames = [
-    `${this.basePath}up1.png`,
-    `${this.basePath}up2.png`
-  ];
-
-  private readonly downFrames = [
-    `${this.basePath}down1.png`,
-    `${this.basePath}down2.png`
-  ];
+  private readonly backFrames = this.buildFrames('Back - Walking');
+  private readonly frontFrames = this.buildFrames('Front - Walking');
+  private readonly leftFrames = this.buildFrames('Left - Walking');
+  private readonly rightFrames = this.buildFrames('Right - Walking');
 
   fallbackSrc = this.rightFrames[0];
 
@@ -71,15 +63,19 @@ export class PlayerComponent implements OnInit, OnDestroy {
   get currentFrames(): string[] {
     switch (this.direction) {
       case 'up':
-        return this.upFrames;
+        return this.backFrames;
 
       case 'down':
-        return this.downFrames;
+        return this.frontFrames;
 
       case 'left':
+        return this.leftFrames;
+
       case 'right':
-      default:
         return this.rightFrames;
+
+      default:
+        return this.frontFrames;
     }
   }
 
@@ -89,13 +85,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
     return frames[safeFrame];
   }
 
-  get shouldFlip(): boolean {
-    return this.direction === 'left';
-  }
-
   ngOnInit(): void {
     this.lastDirection = this.direction;
-    this.preloadCurrentFrames();
+    this.preloadAllFrames();
 
     this.animationTimer = window.setInterval(() => {
       this.updateFrame();
@@ -123,7 +115,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.lastDirection = this.direction;
       this.frame = 0;
       this.lastFrameTime = performance.now();
-      this.preloadCurrentFrames();
       this.cdr.markForCheck();
       return;
     }
@@ -136,18 +127,38 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
     const now = performance.now();
 
-    const animationSpeed =
-      this.direction === 'up' || this.direction === 'down' ? 220 : 80;
-
-    if (now - this.lastFrameTime >= animationSpeed) {
+    if (now - this.lastFrameTime >= this.animationSpeed) {
       this.lastFrameTime = now;
       this.frame = (this.frame + 1) % frames.length;
       this.cdr.markForCheck();
     }
   }
 
-  private preloadCurrentFrames(): void {
-    this.currentFrames.forEach((src) => {
+  private buildFrames(folderName: string): string[] {
+    return Array.from({ length: this.frameCount }, (_, index) => {
+      const frameNumber = String(index).padStart(3, '0');
+      const fileName = `${folderName}_${frameNumber}.png`;
+
+      return [
+        this.assetsRoot,
+        this.charFolder,
+        folderName,
+        fileName
+      ]
+        .map(encodeURIComponent)
+        .join('/');
+    });
+  }
+
+  private preloadAllFrames(): void {
+    const allFrames = [
+      ...this.backFrames,
+      ...this.frontFrames,
+      ...this.leftFrames,
+      ...this.rightFrames
+    ];
+
+    allFrames.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
