@@ -1,15 +1,13 @@
 .player {
   position: absolute;
-  z-index: 10; /* Higher than walls (z-index: 2) so player is visible */
+  z-index: 10;
   pointer-events: none;
-  
-  /* Centers the player sprite exactly on the calculated coordinate */
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Prevents the sprite from looking stretched */
+    object-fit: contain;
     display: block;
     user-select: none;
     -webkit-user-drag: none;
