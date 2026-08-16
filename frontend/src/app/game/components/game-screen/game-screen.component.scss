@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.gameScreenContainer {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-image: url('/assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
