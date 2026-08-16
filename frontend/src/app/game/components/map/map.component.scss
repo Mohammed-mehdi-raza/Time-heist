@@ -1,0 +1,34 @@
+.game-map {
+//   --tile-size: 48px;
+
+//   display: grid;
+//   grid-template-columns: repeat(var(--columns), var(--tile-size));
+//   grid-template-rows: repeat(var(--rows), var(--tile-size));
+  width: 95vw;
+  height: 75vh;
+  position: relative;
+  background-image: url('/assets/maps/map1.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  box-sizing: border-box;
+}
+
+.tile-wall {
+  background: #374151;
+  border: 1px solid #4b5563;
+}
+
+.tile-floor {
+  background: #111827;
+}
+
+.tile-exit {
+  background: #064e3b;
+}
