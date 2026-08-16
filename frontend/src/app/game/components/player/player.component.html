@@ -7,7 +7,8 @@
     [style.height.%]="(playerScale / gameMap.height) * 100"
   >
     <img
-      src="assets/sprites/Character sprite PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_000.png"
+      [src]="spriteUrl"
+      (error)="onImageError($event)"
       alt="Player"
     />
   </div>
