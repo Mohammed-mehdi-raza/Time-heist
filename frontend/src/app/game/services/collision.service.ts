@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
+import { TrapService } from './trap.service';
 
 @Injectable(
   {
@@ -9,7 +10,7 @@ import { GameService } from './game.service';
   }
 )
 export class CollisionService {
-  constructor(private readonly gameService: GameService) {}
+  constructor(private readonly gameService: GameService, private readonly trapService: TrapService) {}
 
   isWall(position: Position, gameMap: GameMap): boolean {
     if (
@@ -18,6 +19,14 @@ export class CollisionService {
       position.x >= gameMap.width ||
       position.y >= gameMap.height
     ) {
+      return true;
+    }
+    // If a spike is currently up at this position, behave as opaque and show an "Ouch!" message
+    if (this.trapService.isSpikeUp(position)) {
+      const state = this.gameService.currentState;
+      if (state) {
+        this.gameService.updateState({ eventMessage: 'Ouch!' });
+      }
       return true;
     }
 
