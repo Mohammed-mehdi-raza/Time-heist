@@ -1,4 +1,5 @@
 import { Position } from './position.model';
+import { GuardConfig } from './guard-config.model';
 
 export type TileType = 'wall' | 'floor' | 'exit' | 'diamond' | 'trap';
 
@@ -11,4 +12,5 @@ export interface GameMap {
   playerStart: Position;
   exitPosition: Position;
   diamondPosition: Position;
+  guards: GuardConfig[];
 }

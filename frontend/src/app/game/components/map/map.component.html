@@ -7,6 +7,7 @@
     <img class="wall-img" src="/assets/images/wall.png" alt="Wall">
   </div>
   <app-player [gameMap]="gameMap"></app-player>
+  <app-guard *ngFor="let guard of guards" [gameMap]="gameMap" [guardConfig]="guard"></app-guard>
   <app-exit [gameMap]="gameMap"></app-exit>
   <app-diamond [gameMap]="gameMap"></app-diamond>
 </div>
