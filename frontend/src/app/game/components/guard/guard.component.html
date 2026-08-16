@@ -9,11 +9,10 @@
     <div
       class="guard-range"
       [ngClass]="'guard-range--' + facingDirection"
-      [style.width.%]="((visionRadius * 2.2) / gameMap.width) * 100"
-      [style.height.%]="((visionRadius * 2.2) / gameMap.height) * 100"
     ></div>
     <img
       class="guard-sprite"
+      [class.guard-sprite--left]="facingDirection === 'left'"
       [src]="currentImage"
       alt="Guard"
       draggable="false"

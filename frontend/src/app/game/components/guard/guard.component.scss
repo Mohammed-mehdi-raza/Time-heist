@@ -4,6 +4,7 @@
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   z-index: 8;
+  overflow: visible;
   pointer-events: none;
   transition: left 0.6s linear, top 0.6s linear;
   -webkit-transform: translate(-50%, -50%);
@@ -16,28 +17,32 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(239, 68, 68, 0.12);
-  border: 2px solid rgba(239, 68, 68, 0.95);
-  box-shadow: 0 0 18px rgba(239, 68, 68, 0.35);
-  clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+  width: 220%;
+  height: 180%;
+  transform-origin: 0 50%;
+  transform: translate(0, -50%);
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.22), rgba(239, 68, 68, 0.04));
+  border: 2px solid rgba(239, 68, 68, 0.9);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  border-radius: 0 16px 16px 0;
   z-index: 7;
 }
 
 .guard-range--up {
-  transform: translate(-50%, -50%) rotate(-90deg);
+  transform: translate(0, -50%) rotate(-90deg);
 }
 
 .guard-range--down {
-  transform: translate(-50%, -50%) rotate(90deg);
+  transform: translate(0, -50%) rotate(90deg);
 }
 
 .guard-range--left {
-  transform: translate(-50%, -50%) rotate(180deg);
+  transform: translate(-100%, -50%) rotate(180deg);
 }
 
 .guard-range--right {
-  transform: translate(-50%, -50%) rotate(0deg);
+  transform: translate(0, -50%) rotate(0deg);
 }
 
 .guard-sprite {
@@ -49,4 +54,10 @@
   user-select: none;
   -webkit-user-drag: none;
   z-index: 9;
+  transform-origin: center;
+  transition: transform 0.15s ease-out;
+}
+
+.guard-sprite--left {
+  transform: scaleX(-1);
 }
