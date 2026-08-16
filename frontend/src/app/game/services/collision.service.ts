@@ -3,7 +3,11 @@ import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root'
+  }
+)
 export class CollisionService {
   constructor(private readonly gameService: GameService) {}
 

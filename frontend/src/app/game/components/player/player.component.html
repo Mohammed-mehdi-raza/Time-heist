@@ -1,1 +1,24 @@
-<p>player works!</p>
+<!-- @if (player && position) {
+  <div
+    class="player"
+    [style.left.%]="((position.x + 0.5) / mapWidth) * 100"
+    [style.top.%]="((position.y + 0.5) / mapHeight) * 100"
+  >
+    <img
+      src="assets/sprites/Character sprite PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_000.png"
+      alt="Player"
+    />
+  </div>
+} -->
+@if (player && position) {
+  <div
+    class="player"
+    [style.left.px]="leftPx"
+    [style.top.px]="topPx"
+  >
+    <img
+      src="assets/sprites/Character sprite PNG/PNG Sequences/Walking/0_Fallen_Angels_Walking_000.png"
+      alt="Player"
+    />
+  </div>
+}

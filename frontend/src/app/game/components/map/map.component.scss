@@ -1,17 +1,29 @@
-.game-map {
-//   --tile-size: 48px;
+// .game-map {
+// //   --tile-size: 48px;
 
-//   display: grid;
-//   grid-template-columns: repeat(var(--columns), var(--tile-size));
-//   grid-template-rows: repeat(var(--rows), var(--tile-size));
-  width: 95vw;
-  height: 75vh;
+// //   display: grid;
+// //   grid-template-columns: repeat(var(--columns), var(--tile-size));
+// //   grid-template-rows: repeat(var(--rows), var(--tile-size));
+//   width: 95vw;
+//   height: 75vh;
+//   position: relative;
+//   background-image: url('/assets/maps/map1.png');
+//   background-size: contain;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-attachment: fixed;
+// }
+.game-map {
   position: relative;
   background-image: url('/assets/maps/map1.png');
-  background-size: contain;
-  background-position: center;
+  
+  /* This is now safe because the container matches the grid aspect ratio */
+  background-size: 100% 100%; 
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  
+  /* REMOVE background-attachment: fixed; */
+  /* REMOVE width: 100vh; */
+  /* REMOVE height: 75vh; */
 }
 
 .tile {

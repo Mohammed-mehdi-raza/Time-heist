@@ -1,0 +1,17 @@
+.player {
+  position: absolute;
+  width: 48px;
+  height: 64px;
+  z-index: 20;
+  pointer-events: none;
+  
+
+  transform: translate(-50%, -50%); 
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}

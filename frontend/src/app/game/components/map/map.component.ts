@@ -19,4 +19,15 @@ export class MapComponent {
   getTileClass(tile: TileType): string {
     return `tile-${tile}`;
   }
+    // 1. Define your tile size here (e.g., 48px, 32px)
+  readonly tileSize = 48; 
+
+  // 2. Calculate exact pixel width/height based on the grid
+  get mapWidthPx() {
+    return this.gameMap.width * this.tileSize;
+  }
+
+  get mapHeightPx() {
+    return this.gameMap.height * this.tileSize;
+  }
 }

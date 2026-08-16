@@ -1,9 +1,14 @@
-<div
+<!-- <div
   class="game-map"
 >
+  <app-player></app-player>
 
-  <!-- <app-player></app-player>
-  <app-diamond></app-diamond>
-  <app-exit></app-exit>
-  <app-guard></app-guard> -->
+</div> -->
+<div
+  class="game-map"
+  [style.width.px]="mapWidthPx"
+  [style.height.px]="mapHeightPx"
+>
+  <!-- Pass tileSize to the player so they know how to move -->
+  <app-player [tileSize]="tileSize"></app-player>
 </div>
