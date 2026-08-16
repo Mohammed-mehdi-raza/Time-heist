@@ -1,1 +1,17 @@
-<p>trap works!</p>
+<div class="trap-zone" *ngIf="gameMap">
+  <div
+    class="trap-cell"
+    *ngFor="let cell of laserTrapCells"
+    [ngStyle]="getTrapStyle(cell)"
+  >
+    <img [src]="'/assets/images/' + getLaserImageFor(cell)" alt="Laser trap">
+  </div>
+
+  <div
+    class="trap-cell"
+    *ngFor="let cell of spikeTrapCells"
+    [ngStyle]="getTrapStyle(cell)"
+  >
+    <img [src]="'/assets/images/' + getSpikeImageFor(cell)" alt="Spike trap">
+  </div>
+</div>

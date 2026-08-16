@@ -1,1 +1,14 @@
-<p>diamond works!</p>
+<ng-container>
+  <div
+    class="diamond"
+    [style.transform]="
+      'translate(' +
+      (gameMap.diamondPosition.x * gameMap.tileSize + 30) +
+      'px, ' +
+      (gameMap.diamondPosition.y * gameMap.tileSize + 40) +
+      'px)'
+    "
+  >
+    <img src="assets/images/diamond.png" alt="Diamond" />
+  </div>
+</ng-container>
