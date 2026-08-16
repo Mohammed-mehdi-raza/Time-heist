@@ -4,11 +4,12 @@ import { GameMap, TileType } from '../../models/map.model';
 import { Position } from '../../models/position.model';
 import { ExitComponent } from "../exit/exit.component";
 import { DiamondComponent } from '../diamond/diamond.component';
+import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, ExitComponent,DiamondComponent],
+  imports: [CommonModule, ExitComponent,DiamondComponent,PlayerComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
@@ -18,6 +19,7 @@ export class MapComponent {
   getTileClass(tile: TileType): string {
     return `tile-${tile}`;
   }
+    
 
   get wallPositions(): Position[] {
     if (!this.gameMap?.tiles) {
