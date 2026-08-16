@@ -1,0 +1,28 @@
+{
+  "id": "level-1",
+  "tileSize": 48,
+  "width": 12,
+  "height": 8,
+  "tiles": [
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"],
+    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "exit", "floor", "wall"],
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
+  ],
+  "playerStart": {
+    "x": 1,
+    "y": 1
+  },
+  "exitPosition": {
+    "x": 9,
+    "y": 6
+  },
+  "diamondPosition": {
+    "x": 5,
+    "y": 3
+  }
+}
