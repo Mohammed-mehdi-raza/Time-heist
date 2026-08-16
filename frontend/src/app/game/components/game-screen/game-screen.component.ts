@@ -6,11 +6,13 @@ import { GameService } from '../../services/game.service';
 import { PlayerService } from '../../services/player.service';
 import { HeistModalComponent, HeistStats } from '../heist-modal/heist-modal.component';
 import { GameTimerService } from '../../services/game-timer.service';
+import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-screen',
   standalone: true,
-  imports: [MapComponent, HeistModalComponent],
+  imports: [MapComponent, HeistModalComponent, GameOverModalComponent],
   templateUrl: './game-screen.component.html',
   styleUrl: './game-screen.component.scss'
 })
@@ -23,6 +25,7 @@ export class GameScreenComponent implements OnInit {
     private readonly gameService: GameService,
     private readonly playerService: PlayerService,
     private readonly timerService: GameTimerService,
+    private readonly router: Router,
   ) {}
 
   get currentTime(): number {
@@ -35,6 +38,10 @@ export class GameScreenComponent implements OnInit {
 
   get isGameWon(): boolean {
     return this.gameService.currentState?.status === 'won';
+  }
+
+  get isGameLost(): boolean {
+    return this.gameService.currentState?.status === 'lost';
   }
 
   get heistStats(): HeistStats {
@@ -58,14 +65,26 @@ export class GameScreenComponent implements OnInit {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
+  restartGame(): void {
+    if (!this.gameMap) {
+      return;
+    }
+
+    this.gameService.startGame(this.gameMap);
+    this.timerService.start();
+    this.playerService.startListening();
+  }
+
+  goToMainMenu(): void {
+    this.router.navigate(['']);
+  }
+
   ngOnInit(): void {
     this.http
       .get<GameMap>('assets/maps/map1.json')
       .subscribe((gameMap) => {
         this.gameMap = gameMap;
-        this.gameService.startGame(gameMap);
-        this.timerService.start();
-        this.playerService.startListening();
+        this.restartGame();
       });
   }
 

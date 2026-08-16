@@ -6,6 +6,11 @@
     [style.width.%]="(guardScale / gameMap.width) * 100"
     [style.height.%]="(guardScale / gameMap.height) * 100"
   >
+    <div
+      class="guard-range"
+      [style.width.%]="((visionRadius * 2) / gameMap.width) * 100"
+      [style.height.%]="((visionRadius * 2) / gameMap.height) * 100"
+    ></div>
     <img
       class="guard-sprite"
       [src]="currentImage"

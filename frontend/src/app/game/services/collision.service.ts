@@ -45,10 +45,20 @@ export class CollisionService {
       this.gameService.tryEscape();
     }
 
-    const currentTile = state.map.tiles[position.y][position.x];
+    const currentTile = state.map.tiles[position.y]?.[position.x];
 
     if (currentTile === 'trap') {
       this.handleTrap();
+      return;
+    }
+
+    const guardInRange = state.guards.some((guard) => {
+      const distance = Math.hypot(position.x - guard.position.x, position.y - guard.position.y);
+      return distance <= guard.visionRange;
+    });
+
+    if (guardInRange) {
+      this.gameService.loseGame('You were spotted by a guard');
     }
   }
 

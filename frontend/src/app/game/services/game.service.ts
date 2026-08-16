@@ -26,7 +26,14 @@ export class GameService {
         health: 3,
         hasDiamond: false
       },
-      guards: [],
+      guards: (gameMap.guards ?? []).map((guard) => ({
+        id: guard.id,
+        position: { ...guard.start },
+        patrolPoints: [...guard.path],
+        currentPatrolIndex: 0,
+        visionRange: guard.visionRange ?? 2.5,
+        isAlerted: false
+      })),
       remainingTime: 0,
       score: 0,
       objective: 'Find the diamond and escape',

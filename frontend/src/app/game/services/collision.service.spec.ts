@@ -48,4 +48,23 @@ describe('CollisionService', () => {
 
     expect(gameService.currentState?.player.hasDiamond).toBeTrue();
   });
+
+  it('should trigger a game over when the player enters a guard vision range', () => {
+    const startGuard = gameService.currentState!.guards[0];
+
+    gameService.updateState({
+      guards: [
+        {
+          ...startGuard,
+          position: { x: 3, y: 1 },
+          visionRange: 2.5
+        }
+      ]
+    });
+
+    service.checkInteractions({ x: 5, y: 1 });
+
+    expect(gameService.currentState?.status).toBe('lost');
+    expect(gameService.currentState?.eventMessage).toContain('guard');
+  });
 });

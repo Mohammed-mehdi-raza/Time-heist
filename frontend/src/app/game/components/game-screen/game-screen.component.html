@@ -14,4 +14,8 @@
     @if (isGameWon) {
         <app-heist-modal [stats]="heistStats"></app-heist-modal>
     }
+
+    @if (isGameLost) {
+        <app-game-over-modal [reason]="gameMessage" (restart)="restartGame()" (mainMenu)="goToMainMenu()"></app-game-over-modal>
+    }
 </div>
