@@ -1,11 +1,11 @@
-<ng-container>
+<ng-container *ngIf="!isTaken">
   <div
     class="diamond"
     [style.transform]="
       'translate(' +
       (gameMap.diamondPosition.x * gameMap.tileSize + 30) +
       'px, ' +
-      (gameMap.diamondPosition.y * gameMap.tileSize + 40) +
+      (gameMap.diamondPosition.y * gameMap.tileSize) +
       'px)'
     "
   >

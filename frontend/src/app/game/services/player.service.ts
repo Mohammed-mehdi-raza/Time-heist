@@ -215,8 +215,6 @@ export class PlayerService {
 
     if (!direction) return;
 
-    // --- FIX TS ERROR HERE ---
-    // Create a constant so TypeScript knows this is definitely a Direction
     const moveDirection: Direction = direction; 
 
     const nextPosition = this.getNextPosition(state.player.position, moveDirection);
@@ -230,7 +228,7 @@ export class PlayerService {
         player: {
           ...state.player,
           position: nextPosition,
-          direction: moveDirection // Use the constant here
+          direction: moveDirection
         }
       });
     });

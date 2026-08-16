@@ -27,7 +27,7 @@ export class GameService {
         hasDiamond: false
       },
       guards: [],
-      remainingTime: this.initialTime,
+      remainingTime: 0,
       score: 0,
       objective: 'Find the diamond and escape',
       eventMessage: 'Mission started'
