@@ -9,7 +9,7 @@
     ["wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall"],
     ["wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
     ["wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
-    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall"],
     ["wall", "wall", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall"],
     ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
     ["wall", "floor", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall"],
@@ -29,7 +29,7 @@
   },
   "diamondPosition": {
     "x": 10,
-    "y": 3
+    "y": 4
   },
   "guards": [
     {

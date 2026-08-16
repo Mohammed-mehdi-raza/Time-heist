@@ -31,18 +31,17 @@ export class CollisionService {
       return;
     }
 
+    const isSameTile = (a: Position, b: Position): boolean =>
+      a.x === b.x && a.y === b.y;
+
     if (
-      position.x === state.map.diamondPosition.x &&
-      position.y === state.map.diamondPosition.y &&
+      isSameTile(position, state.map.diamondPosition) &&
       !state.player.hasDiamond
     ) {
       this.gameService.collectDiamond();
     }
 
-    if (
-      position.x === state.map.exitPosition.x &&
-      position.y === state.map.exitPosition.y
-    ) {
+    if (isSameTile(position, state.map.exitPosition)) {
       this.gameService.tryEscape();
     }
 
