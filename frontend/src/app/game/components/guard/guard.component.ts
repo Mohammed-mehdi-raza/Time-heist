@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { GameMap } from '../../models/map.model';
 import { GuardConfig } from '../../models/guard-config.model';
 import { Position } from '../../models/position.model';
@@ -16,7 +17,7 @@ interface AnimationConfig {
 @Component({
   selector: 'app-guard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './guard.component.html',
   styleUrl: './guard.component.scss'
 })
@@ -143,6 +144,24 @@ export class GuardComponent implements OnInit, OnDestroy {
 
   get visionRadius(): number {
     return this.guardConfig.visionRange ?? 2.5;
+  }
+
+  get facingDirection(): 'up' | 'right' | 'down' | 'left' {
+    const path = this.guardConfig.path;
+
+    if (!path || path.length < 2) {
+      return 'right';
+    }
+
+    const target = path[this.currentPatrolIndex] ?? path[0];
+    const dx = target.x - this.position.x;
+    const dy = target.y - this.position.y;
+
+    if (Math.abs(dx) >= Math.abs(dy)) {
+      return dx >= 0 ? 'right' : 'left';
+    }
+
+    return dy >= 0 ? 'down' : 'up';
   }
 
   private syncGuardPosition(): void {

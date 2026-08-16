@@ -8,8 +8,9 @@
   >
     <div
       class="guard-range"
-      [style.width.%]="((visionRadius * 2) / gameMap.width) * 100"
-      [style.height.%]="((visionRadius * 2) / gameMap.height) * 100"
+      [ngClass]="'guard-range--' + facingDirection"
+      [style.width.%]="((visionRadius * 2.2) / gameMap.width) * 100"
+      [style.height.%]="((visionRadius * 2.2) / gameMap.height) * 100"
     ></div>
     <img
       class="guard-sprite"

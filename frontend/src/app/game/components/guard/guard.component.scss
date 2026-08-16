@@ -17,11 +17,27 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: 2px solid rgba(239, 68, 68, 0.9);
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.1);
-  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.12);
+  border: 2px solid rgba(239, 68, 68, 0.95);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.35);
+  clip-path: polygon(50% 50%, 100% 0, 100% 100%);
   z-index: 7;
+}
+
+.guard-range--up {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.guard-range--down {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.guard-range--left {
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+.guard-range--right {
+  transform: translate(-50%, -50%) rotate(0deg);
 }
 
 .guard-sprite {

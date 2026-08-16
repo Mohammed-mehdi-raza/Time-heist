@@ -52,13 +52,17 @@ export class CollisionService {
       return;
     }
 
-    const guardInRange = state.guards.some((guard) => {
-      const distance = Math.hypot(position.x - guard.position.x, position.y - guard.position.y);
-      return distance <= guard.visionRange;
+    const guardCollision = state.guards.some((guard) => {
+      const guardTile = {
+        x: Math.round(guard.position.x),
+        y: Math.round(guard.position.y)
+      };
+
+      return guardTile.x === position.x && guardTile.y === position.y;
     });
 
-    if (guardInRange) {
-      this.gameService.loseGame('You were spotted by a guard');
+    if (guardCollision) {
+      this.gameService.loseGame('You were caught by a guard');
     }
   }
 
