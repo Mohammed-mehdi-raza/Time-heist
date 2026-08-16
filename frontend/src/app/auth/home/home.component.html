@@ -36,3 +36,63 @@
   </button>
 
 </div>
+
+@if (showLogoutDialog) {
+
+  <div
+    class="dialog-overlay"
+    (click)="cancelLogout()">
+
+    <div
+      class="logout-dialog"
+      (click)="$event.stopPropagation()">
+
+      <!-- Decorative top line -->
+      <div class="dialog-line"></div>
+
+      <div class="dialog-content">
+
+        <div class="dialog-icon">
+          <img class="diamond-icon" src="/assets/images/diamond.png" alt="Diamond" />
+        </div>
+
+        <div class="dialog-title">
+          LOG OUT
+        </div>
+
+        <div class="dialog-message">
+          Do you want to logout?
+        </div>
+
+        <div class="dialog-subtext">
+          Your current session will be ended.
+        </div>
+
+        <div class="dialog-actions">
+
+          <button
+            type="button"
+            class="dialog-button cancel-button"
+            (click)="cancelLogout()">
+            CANCEL
+          </button>
+
+          <button
+            type="button"
+            class="dialog-button logout-confirm-button"
+            (click)="confirmLogout()">
+            LOGOUT
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Decorative bottom line -->
+      <div class="dialog-line bottom-line"></div>
+
+    </div>
+
+  </div>
+
+}
