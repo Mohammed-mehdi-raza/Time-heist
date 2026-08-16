@@ -1,14 +1,12 @@
-<!-- <div
-  class="game-map"
->
-  <app-player></app-player>
-
-</div> -->
-<div
-  class="game-map"
-  [style.width.px]="mapWidthPx"
-  [style.height.px]="mapHeightPx"
->
-  <!-- Pass tileSize to the player so they know how to move -->
-  <app-player [tileSize]="tileSize"></app-player>
+<div class="game-map" *ngIf="gameMap">
+  <div
+    class="wall"
+    *ngFor="let wall of wallPositions"
+    [ngStyle]="getWallStyle(wall)"
+  >
+    <img class="wall-img" src="/assets/images/wall.png" alt="Wall">
+  </div>
+  <app-player [gameMap]="gameMap"></app-player>
+  <app-exit [gameMap]="gameMap"></app-exit>
+  <app-diamond [gameMap]="gameMap"></app-diamond>
 </div>

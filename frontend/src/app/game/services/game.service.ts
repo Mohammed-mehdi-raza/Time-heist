@@ -3,11 +3,9 @@ import { BehaviorSubject } from 'rxjs';
 import { GameState } from '../models/game-state.model';
 import { GameMap } from '../models/map.model';
 
-@Injectable(
-  {
-    providedIn: 'root'
-  }
-)
+@Injectable({
+  providedIn: 'root'
+})
 export class GameService {
   private readonly initialTime = 120;
 

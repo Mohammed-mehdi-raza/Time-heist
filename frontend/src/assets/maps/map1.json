@@ -1,28 +1,63 @@
 {
   "id": "level-1",
   "tileSize": 48,
-  "width": 12,
-  "height": 8,
+  "width": 24,
+  "height": 14,
   "tiles": [
-    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"],
-    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
-    ["wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "floor", "wall"],
-    ["wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "wall"],
-    ["wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "floor", "wall"],
-    ["wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "wall"],
-    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "exit", "floor", "wall"],
-    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall"],
+    ["wall", "wall", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
   ],
   "playerStart": {
     "x": 1,
-    "y": 1
+    "y": 13
   },
   "exitPosition": {
-    "x": 9,
-    "y": 6
+    "x": 22,
+    "y": 0
   },
   "diamondPosition": {
-    "x": 5,
+    "x": 10,
     "y": 3
-  }
+  },
+  "guards": [
+    {
+      "id": "guard_1",
+      "start": { "x": 3, "y": 1 },
+      "patrolType": "horizontal",
+      "path": [
+        { "x": 3, "y": 1 },
+        { "x": 10, "y": 1 }
+      ]
+    },
+    {
+      "id": "guard_2",
+      "start": { "x": 1, "y": 7 },
+      "patrolType": "horizontal",
+      "path": [
+        { "x": 1, "y": 7 },
+        { "x": 22, "y": 7 }
+      ]
+    },
+    {
+      "id": "guard_3",
+      "start": { "x": 22, "y": 12 },
+      "patrolType": "vertical",
+      "path": [
+        { "x": 22, "y": 12 },
+        { "x": 22, "y": 1 }
+      ]
+    }
+  ]
 }

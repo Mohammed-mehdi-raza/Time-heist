@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { GameMap } from '../../models/map.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-diamond',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './diamond.component.html',
-  styleUrl: './diamond.component.scss'
+  styleUrls: ['./diamond.component.scss']
 })
 export class DiamondComponent {
-
-}
+  @Input({ required: true }) gameMap!: GameMap;
+} 
