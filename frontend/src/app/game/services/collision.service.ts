@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
+import { TrapService } from './trap.service';
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root'
+  }
+)
 export class CollisionService {
-  constructor(private readonly gameService: GameService) {}
+  constructor(private readonly gameService: GameService, private readonly trapService: TrapService) {}
 
   isWall(position: Position, gameMap: GameMap): boolean {
     if (
@@ -14,6 +19,14 @@ export class CollisionService {
       position.x >= gameMap.width ||
       position.y >= gameMap.height
     ) {
+      return true;
+    }
+    // If a spike is currently up at this position, behave as opaque and show an "Ouch!" message
+    if (this.trapService.isSpikeUp(position)) {
+      const state = this.gameService.currentState;
+      if (state) {
+        this.gameService.updateState({ eventMessage: 'Ouch!' });
+      }
       return true;
     }
 
@@ -27,18 +40,17 @@ export class CollisionService {
       return;
     }
 
+    const isSameTile = (a: Position, b: Position): boolean =>
+      a.x === b.x && a.y === b.y;
+
     if (
-      position.x === state.map.diamondPosition.x &&
-      position.y === state.map.diamondPosition.y &&
+      isSameTile(position, state.map.diamondPosition) &&
       !state.player.hasDiamond
     ) {
       this.gameService.collectDiamond();
     }
 
-    if (
-      position.x === state.map.exitPosition.x &&
-      position.y === state.map.exitPosition.y
-    ) {
+    if (isSameTile(position, state.map.exitPosition)) {
       this.gameService.tryEscape();
     }
 

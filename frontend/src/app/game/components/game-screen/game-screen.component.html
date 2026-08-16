@@ -1,6 +1,17 @@
 <div class="gameScreenContainer">
-    <p>Game Screen works!</p>
     @if (gameMap) {
+        <div class="gameHud">
+            <div class="timerBadge">TIME: {{ formatTime(currentTime) }}</div>
+        </div>
+
         <app-map [gameMap]="gameMap"></app-map>
+
+        @if (gameMessage) {
+            <div class="gameMessageBar">{{ gameMessage }}</div>
+        }
+    }
+
+    @if (isGameWon) {
+        <app-heist-modal [stats]="heistStats"></app-heist-modal>
     }
 </div>

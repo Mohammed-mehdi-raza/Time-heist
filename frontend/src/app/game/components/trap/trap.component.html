@@ -12,6 +12,6 @@
     *ngFor="let cell of spikeTrapCells"
     [ngStyle]="getTrapStyle(cell)"
   >
-    <img [src]="'/assets/images/' + getSpikeImageFor(cell)" alt="Spike trap">
+    <img class="spike" [src]="'/assets/images/' + getSpikeImageFor(cell)" alt="Spike trap">
   </div>
 </div>

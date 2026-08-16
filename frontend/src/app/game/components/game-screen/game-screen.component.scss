@@ -4,8 +4,22 @@
   min-height: 100vh;
 }
 
+// .gameScreenContainer {
+//   position: relative;
+//   width: 100%;
+//   min-height: 100vh;
+//   overflow: hidden;
+//   background-image: url('/assets/images/background.png');
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-attachment: fixed;
+// }
 .gameScreenContainer {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
@@ -13,5 +27,75 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+}
+
+.gameHud {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.timerBadge {
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.3);
+}
+
+.gameMessageBar {
+  /* Positioning & Layout */
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  text-transform: uppercase;
+  
+  /* Sizing & Spacing */
+  min-width: 280px;
+  max-width: 90%;
+  padding: 10px 24px;
+  text-align: center;
+  
+  /* Stone & Cyber Theme Styling */
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 3px solid #64748b;
+  border-radius: 6px;
+  
+  /* Pixel-art dual border effect */
+  box-shadow: 
+    0 0 0 2px #0f172a,
+    0 8px 16px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  /* Typography */
+  color: #38bdf8; /* Cyan highlight matching the diamond color */
+  font-family: 'Press Start 2P', 'Courier New', monospace; /* Use a pixel/game font if available */
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+  
+  /* Smooth Fade-In Animation */
+  animation: slideUp 0.25s ease-out;
+}
+
+/* Entry Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }

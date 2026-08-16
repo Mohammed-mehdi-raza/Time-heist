@@ -5,11 +5,15 @@ import { Position } from '../../models/position.model';
 import { ExitComponent } from "../exit/exit.component";
 import { DiamondComponent } from '../diamond/diamond.component';
 import { TrapComponent } from '../trap/trap.component';
+import { PlayerComponent } from '../player/player.component';
+import { GuardComponent } from '../guard/guard.component';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, ExitComponent, DiamondComponent, TrapComponent],
+  imports: [CommonModule, ExitComponent,DiamondComponent,PlayerComponent,
+    GuardComponent, TrapComponent
+  ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })
@@ -19,6 +23,7 @@ export class MapComponent {
   getTileClass(tile: TileType): string {
     return `tile-${tile}`;
   }
+    
 
   get wallPositions(): Position[] {
     if (!this.gameMap?.tiles) {
@@ -48,5 +53,8 @@ export class MapComponent {
       width: `${tileWidth}%`,
       height: `${tileHeight}%`
     };
+    }
+  get guards() {
+    return this.gameMap?.guards ?? [];
   }
 }

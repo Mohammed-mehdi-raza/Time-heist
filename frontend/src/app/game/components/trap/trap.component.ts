@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GameMap } from '../../models/map.model';
 import { Position } from '../../models/position.model';
+import { TrapService } from '../../services/trap.service';
 
 @Component({
   selector: 'app-trap',
@@ -14,12 +15,8 @@ export class TrapComponent implements OnInit, OnDestroy {
   @Input({ required: true }) gameMap!: GameMap;
   // per-trap state so each trap can have independent timing
   private laserState = new Map<string, boolean>();
-  private spikeState = new Map<string, number>(); // 0=down,1=mid,2=up
-
   private laserIntervals: number[] = [];
   private laserTimeouts: number[] = [];
-  private spikeIntervals: number[] = [];
-  private spikeTimeouts: number[] = [];
 
   private readonly laserPositions: Position[] = [
     { x: 3, y: 2 },
@@ -29,13 +26,7 @@ export class TrapComponent implements OnInit, OnDestroy {
     { x: 10, y: 11 }
   ];
 
-  private readonly spikePositions: Position[] = [
-    { x: 1, y: 7 },
-    { x: 10, y: 3 },
-    { x: 20, y: 7 },
-    { x: 10, y: 7 },
-    { x: 21, y: 12 }
-  ];
+  constructor(private readonly trapService: TrapService) {}
 
   ngOnInit(): void {
     // start independent timers per-laser so their on/off cycles are randomized
@@ -56,37 +47,18 @@ export class TrapComponent implements OnInit, OnDestroy {
       this.laserTimeouts.push(t);
     }
 
-    // spikes cycle through 3 visual states over ~3s (1s each); randomize start offsets
-    for (const pos of this.spikePositions) {
-      const key = `${pos.x},${pos.y}`;
-      this.spikeState.set(key, Math.floor(Math.random() * 3));
-
-      const initialDelay = Math.floor(Math.random() * 3000);
-      const t = window.setTimeout(() => {
-        const id = window.setInterval(() => {
-          const cur = this.spikeState.get(key) ?? 0;
-          this.spikeState.set(key, (cur + 1) % 3);
-        }, 1000); // advance phase each 1s -> full cycle ~3s
-        this.spikeIntervals.push(id);
-      }, initialDelay);
-
-      this.spikeTimeouts.push(t);
-    }
+    // delegate spike timing/state to TrapService
+    this.trapService.start();
   }
 
   ngOnDestroy(): void {
     for (const id of this.laserIntervals) {
       window.clearInterval(id);
     }
-    for (const id of this.spikeIntervals) {
-      window.clearInterval(id);
-    }
     for (const t of this.laserTimeouts) {
       window.clearTimeout(t);
     }
-    for (const t of this.spikeTimeouts) {
-      window.clearTimeout(t);
-    }
+    this.trapService.stop();
   }
 
   get laserTrapCells(): Position[] {
@@ -94,12 +66,29 @@ export class TrapComponent implements OnInit, OnDestroy {
   }
 
   get spikeTrapCells(): Position[] {
-    return this.spikePositions;
+    return this.trapService.spikePositions;
   }
 
   getTrapStyle(position: Position): Record<string, string> {
     const tileWidth = 100 / this.gameMap.width;
     const tileHeight = 100 / this.gameMap.height;
+
+    // make spike visuals smaller and centered within the tile
+    const isSpike = this.trapService.spikePositions.some(p => p.x === position.x && p.y === position.y);
+    if (isSpike) {
+      const scale = 1.0; // spikes occupy 100% of the tile
+      const w = tileWidth * scale;
+      const h = tileHeight * scale;
+      const left = position.x * tileWidth + (tileWidth - w) / 2;
+      const top = position.y * tileHeight + (tileHeight - h) / 2;
+
+      return {
+        left: `${left}%`,
+        top: `${top}%`,
+        width: `${w}%`,
+        height: `${h}%`
+      };
+    }
 
     return {
       left: `${position.x * tileWidth}%`,
@@ -116,7 +105,7 @@ export class TrapComponent implements OnInit, OnDestroy {
 
   getSpikeImage(): string {
     // not used: provide default fallback
-    return 'spikeUp.png';
+    return 'spike_up.png';
   }
 
   // position-aware image getters
@@ -127,15 +116,6 @@ export class TrapComponent implements OnInit, OnDestroy {
   }
 
   getSpikeImageFor(position: Position): string {
-    const key = `${position.x},${position.y}`;
-    const phase = this.spikeState.get(key) ?? 0;
-    switch (phase) {
-      case 0:
-        return 'spikeDown.png';
-      case 1:
-        return 'spikeMid.png';
-      default:
-        return 'spikeUp.png';
-    }
+    return this.trapService.getSpikeImageFor(position);
   }
 }
