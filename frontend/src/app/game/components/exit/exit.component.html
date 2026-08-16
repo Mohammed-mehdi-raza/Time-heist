@@ -1,1 +1,15 @@
-<p>exit works!</p>
+<ng-container *ngIf="gameMap">
+  <div
+    class="exit"
+    [class.unlocked]="hasDiamond"
+    [style.width.px]="gameMap.tileSize + 15"
+    [style.height.px]="gameMap.tileSize + 10"
+    [style.transform]="exitTransform"
+  >
+    <img
+      class="exit-image"
+      [src]="hasDiamond ? '/assets/images/escapeDoorOpen.png' : '/assets/images/escapeDoor.png'"
+      alt="Exit door"
+    />
+  </div>
+</ng-container>

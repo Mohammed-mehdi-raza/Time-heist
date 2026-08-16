@@ -1,6 +1,12 @@
+import { Position } from './position.model';
 export interface GuardState {
 
-  id: number;
+  id: string;
+  position: Position;
+  // patrolPoints: Position[];
+  currentPatrolIndex: number;
+  visionRange: number;
+  isAlerted: boolean;
 
   type: 'guard1' | 'guard2' | 'guard3';
 

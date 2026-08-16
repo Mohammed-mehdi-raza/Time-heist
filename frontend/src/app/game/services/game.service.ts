@@ -1,9 +1,113 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { GameState } from '../models/game-state.model';
+import { GameMap } from '../models/map.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
+  private readonly initialTime = 120;
 
-  constructor() { }
+  private readonly gameStateSubject =
+    new BehaviorSubject<GameState | null>(null);
+
+  readonly gameState$ = this.gameStateSubject.asObservable();
+
+  startGame(gameMap: GameMap): void {
+    const state: GameState = {
+      status: 'running',
+      map: gameMap,
+      player: {
+        id: 'player-1',
+        position: { ...gameMap.playerStart },
+        direction: 'down',
+        speed: 1,
+        health: 3,
+        hasDiamond: false
+      },
+      guards: [],
+      remainingTime: this.initialTime,
+      score: 0,
+      objective: 'Find the diamond and escape',
+      eventMessage: 'Mission started'
+    };
+
+    this.gameStateSubject.next(state);
+  }
+
+  get currentState(): GameState | null {
+    return this.gameStateSubject.value;
+  }
+
+  updateState(partialState: Partial<GameState>): void {
+    const currentState = this.currentState;
+
+    if (!currentState) {
+      return;
+    }
+
+    this.gameStateSubject.next({
+      ...currentState,
+      ...partialState
+    });
+  }
+
+  collectDiamond(): void {
+    const currentState = this.currentState;
+
+    if (!currentState || currentState.player.hasDiamond) {
+      return;
+    }
+
+    this.updateState({
+      player: {
+        ...currentState.player,
+        hasDiamond: true
+      },
+      score: currentState.score + 100,
+      objective: 'Reach the exit',
+      eventMessage: 'Diamond collected'
+    });
+  }
+
+  tryEscape(): void {
+    const currentState = this.currentState;
+
+    if (!currentState) {
+      return;
+    }
+
+    if (!currentState.player.hasDiamond) {
+      this.updateState({
+        eventMessage: 'Collect the diamond first'
+      });
+      return;
+    }
+
+    this.updateState({
+      status: 'won',
+      score: currentState.score + currentState.remainingTime * 10,
+      eventMessage: 'You escaped successfully'
+    });
+  }
+
+  loseGame(message: string): void {
+    this.updateState({
+      status: 'lost',
+      eventMessage: message
+    });
+  }
+
+  pauseGame(): void {
+    if (this.currentState?.status === 'running') {
+      this.updateState({ status: 'paused' });
+    }
+  }
+
+  resumeGame(): void {
+    if (this.currentState?.status === 'paused') {
+      this.updateState({ status: 'running' });
+    }
+  }
 }

@@ -1,14 +1,12 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-
-import {
-  GuardComponent,
-  GuardType,
-  GuardAnimation
-} from '../guard/guard.component';
+import {Component,OnDestroy,OnInit} from '@angular/core';
+import {GuardComponent,GuardType,GuardAnimation} from '../guard/guard.component';
+// import { Component, OnInit } from '@angular/core';
+import { MapComponent } from '../map/map.component';
+import { GameMap } from '../../models/map.model';
+import { GameTimerService } from '../../services/game-timer.service';
+import { HttpClient } from '@angular/common/http';
+import { GameService } from '../../services/game.service';
+import { PlayerService } from '../../services/player.service';
 
 interface PatrolPoint {
   x: number;
@@ -32,20 +30,40 @@ interface TestGuard {
   currentPoint: number;
 }
 
+
 @Component({
   selector: 'app-game-screen',
   standalone: true,
-
   imports: [
-    GuardComponent
+    GuardComponent,
+    MapComponent
   ],
-
   templateUrl: './game-screen.component.html',
-
   styleUrl: './game-screen.component.scss'
 })
-export class GameScreenComponent
-  implements OnInit, OnDestroy {
+
+export class GameScreenComponent implements OnInit, OnDestroy {
+
+  gameMap?: GameMap;
+
+  constructor(
+    private readonly http: HttpClient,
+    // private readonly gameService: GameService,
+    // private readonly playerService: PlayerService,
+    // private readonly timerService: GameTimerService
+  ) {}
+
+  ngOnInit(): void {
+    this.http
+      .get<GameMap>('assets/maps/map1.json')
+      .subscribe((gameMap) => {
+        this.gameMap = gameMap;
+        this.startGameLoop();
+        // this.gameService.startGame(gameMap);
+        // this.playerService.startListening();
+        // this.timerService.start();
+      });
+  }
 
 
   /*
@@ -111,12 +129,6 @@ export class GameScreenComponent
 
   private animationFrameId?: number;
 
-
-  ngOnInit(): void {
-
-    this.startGameLoop();
-
-  }
 
 
   /*

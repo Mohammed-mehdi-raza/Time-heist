@@ -1,1 +1,11 @@
-<p>map works!</p>
+<div class="game-map" *ngIf="gameMap">
+  <div
+    class="wall"
+    *ngFor="let wall of wallPositions"
+    [ngStyle]="getWallStyle(wall)"
+  >
+    <img class="wall-img" src="/assets/images/wall.png" alt="Wall">
+  </div>
+  <app-exit [gameMap]="gameMap"></app-exit>
+  <app-diamond [gameMap]="gameMap"></app-diamond>
+</div>
