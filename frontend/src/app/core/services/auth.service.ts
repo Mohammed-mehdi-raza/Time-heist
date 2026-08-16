@@ -8,12 +8,13 @@ import {
   LoginResponse,
   RegisterRequest
 } from '../models/auth.model';
+import { environment } from '../../../environment/evironment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:8080/api/auth';
+  private readonly apiUrl = environment.apiUrl +'/auth';
 
   constructor(private http: HttpClient) {}
 
