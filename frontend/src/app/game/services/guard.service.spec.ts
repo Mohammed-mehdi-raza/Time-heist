@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GaurdService } from './gaurd.service';
+import { GaurdService } from './guard.service';
 
 describe('GaurdService', () => {
   let service: GaurdService;

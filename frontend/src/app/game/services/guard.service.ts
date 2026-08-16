@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export interface GuardPosition {
-  x: number;
-  y: number;
-}
-
-export interface PatrolPoint {
-  x: number;
-  y: number;
-}
+import { Position } from '../models/position.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +7,10 @@ export interface PatrolPoint {
 export class GuardService {
 
   moveTowards(
-    current: GuardPosition,
-    target: PatrolPoint,
+    current: Position,
+    target: Position,
     speed: number
-  ): GuardPosition {
+  ): Position {
 
     const dx = target.x - current.x;
     const dy = target.y - current.y;
@@ -29,6 +20,7 @@ export class GuardService {
     );
 
     if (distance <= speed) {
+
       return {
         x: target.x,
         y: target.y
