@@ -10,4 +10,5 @@ export interface GuardConfig {
   start: Position;
   patrolType: GuardPatrolType;
   path: Position[];
+  visionRange?: number;
 }

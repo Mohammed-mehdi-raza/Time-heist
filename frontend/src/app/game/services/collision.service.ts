@@ -54,10 +54,24 @@ export class CollisionService {
       this.gameService.tryEscape();
     }
 
-    const currentTile = state.map.tiles[position.y][position.x];
+    const currentTile = state.map.tiles[position.y]?.[position.x];
 
     if (currentTile === 'trap') {
       this.handleTrap();
+      return;
+    }
+
+    const guardCollision = state.guards.some((guard) => {
+      const guardTile = {
+        x: Math.round(guard.position.x),
+        y: Math.round(guard.position.y)
+      };
+
+      return guardTile.x === position.x && guardTile.y === position.y;
+    });
+
+    if (guardCollision) {
+      this.gameService.loseGame('You were caught by a guard');
     }
   }
 

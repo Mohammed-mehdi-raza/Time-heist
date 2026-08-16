@@ -1,0 +1,18 @@
+<div class="modal-overlay">
+  <div class="modal-card">
+    <h1 class="title">GAME OVER</h1>
+    
+    <div class="icon-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="90" height="90" fill="#d9383a">
+        <path d="M12 2C7.58 2 4 5.58 4 10c0 2.5 1.14 4.73 2.95 6.22V19c0 .55.45 1 1 1h2v2h4v-2h2c.55 0 1-.45 1-1v-2.78C18.86 14.73 20 12.5 20 10c0-4.42-3.58-8-8-8zm-3 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+      </svg>
+    </div>
+
+    <h2 class="sub-title">{{ reason }}</h2>
+
+    <div class="button-group">
+      <button class="btn btn-restart" (click)="onRestart()">RESTART</button>
+      <button class="btn btn-main-menu" (click)="onMainMenu()">MAIN MENU</button>
+    </div>
+  </div>
+</div>

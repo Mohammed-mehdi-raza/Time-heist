@@ -1,8 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { GameMap } from '../../models/map.model';
 import { GuardConfig } from '../../models/guard-config.model';
 import { Position } from '../../models/position.model';
 import { GuardService } from '../../services/guard.service';
+import { GameService } from '../../services/game.service';
 
 type GuardType = 'guard1' | 'guard2' | 'guard3';
 
@@ -15,7 +17,7 @@ interface AnimationConfig {
 @Component({
   selector: 'app-guard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './guard.component.html',
   styleUrl: './guard.component.scss'
 })
@@ -28,7 +30,8 @@ export class GuardComponent implements OnInit, OnDestroy {
   guardConfig!: GuardConfig;
 
   constructor(
-    private readonly guardService: GuardService
+    private readonly guardService: GuardService,
+    private readonly gameService: GameService
   ) { }
 
   get guardType(): GuardType {
@@ -138,6 +141,54 @@ export class GuardComponent implements OnInit, OnDestroy {
         this.moveGuard();
       }, 30);
   }
+
+  get visionRadius(): number {
+    return this.guardConfig.visionRange ?? 2.5;
+  }
+
+  get facingDirection(): 'up' | 'right' | 'down' | 'left' {
+    const path = this.guardConfig.path;
+
+    if (!path || path.length < 2) {
+      return 'right';
+    }
+
+    const target = path[this.currentPatrolIndex] ?? path[0];
+    const dx = target.x - this.position.x;
+    const dy = target.y - this.position.y;
+
+    if (Math.abs(dx) >= Math.abs(dy)) {
+      return dx >= 0 ? 'right' : 'left';
+    }
+
+    return dy >= 0 ? 'down' : 'up';
+  }
+
+  private syncGuardPosition(): void {
+    const currentState = this.gameService.currentState;
+
+    if (!currentState) {
+      return;
+    }
+
+    const existingGuard = currentState.guards.find((guard) => guard.id === this.guardConfig.id);
+
+    this.gameService.updateState({
+      guards: currentState.guards.map((guard) =>
+        guard.id === this.guardConfig.id
+          ? {
+              ...guard,
+              position: { ...this.position },
+              patrolPoints: [...this.guardConfig.path],
+              currentPatrolIndex: this.currentPatrolIndex,
+              visionRange: this.visionRadius,
+              isAlerted: guard.isAlerted
+            }
+          : guard
+      )
+    });
+  }
+
   private moveGuard(): void {
 
     const path = this.guardConfig.path;
@@ -154,6 +205,8 @@ export class GuardComponent implements OnInit, OnDestroy {
         target,
         0.025
       );
+
+    this.syncGuardPosition();
 
     const reached =
       this.position.x === target.x &&

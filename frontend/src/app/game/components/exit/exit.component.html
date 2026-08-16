@@ -2,9 +2,10 @@
   <div
     class="exit"
     [class.unlocked]="hasDiamond"
-    [style.width.px]="gameMap.tileSize + 15"
-    [style.height.px]="gameMap.tileSize + 10"
-    [style.transform]="exitTransform"
+    [style.left.%]="((gameMap.exitPosition.x + 0.5) / gameMap.width) * 100"
+    [style.top.%]="((gameMap.exitPosition.y + 0.5) / gameMap.height) * 100"
+    [style.width.%]="(1.15 / gameMap.width) * 100"
+    [style.height.%]="(1.15 / gameMap.height) * 100"
   >
     <img
       class="exit-image"

@@ -6,8 +6,13 @@
     [style.width.%]="(guardScale / gameMap.width) * 100"
     [style.height.%]="(guardScale / gameMap.height) * 100"
   >
+    <div
+      class="guard-range"
+      [ngClass]="'guard-range--' + facingDirection"
+    ></div>
     <img
       class="guard-sprite"
+      [class.guard-sprite--left]="facingDirection === 'left'"
       [src]="currentImage"
       alt="Guard"
       draggable="false"
