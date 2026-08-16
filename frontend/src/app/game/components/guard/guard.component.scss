@@ -1,0 +1,35 @@
+:host {
+  position: absolute;
+
+  display: block;
+
+  pointer-events: none;
+
+  z-index: 20;
+}
+
+.guard {
+  position: absolute;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.guard-sprite {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+
+  user-select: none;
+
+  pointer-events: none;
+}
