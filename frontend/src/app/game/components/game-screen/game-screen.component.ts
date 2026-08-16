@@ -19,8 +19,8 @@ export class GameScreenComponent implements OnInit {
 
   constructor(
     private readonly http: HttpClient,
-    // private readonly gameService: GameService,
-    // private readonly playerService: PlayerService,
+    private readonly gameService: GameService,
+    private readonly playerService: PlayerService,
     // private readonly timerService: GameTimerService
   ) {}
 
@@ -29,8 +29,8 @@ export class GameScreenComponent implements OnInit {
       .get<GameMap>('assets/maps/map1.json')
       .subscribe((gameMap) => {
         this.gameMap = gameMap;
-        // this.gameService.startGame(gameMap);
-        // this.playerService.startListening();
+        this.gameService.startGame(gameMap);
+        this.playerService.startListening();
         // this.timerService.start();
       });
   }
