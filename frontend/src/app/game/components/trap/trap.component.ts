@@ -48,13 +48,7 @@ export class TrapComponent implements OnInit, OnDestroy {
       const t = window.setTimeout(() => {
         const id = window.setInterval(() => {
           const cur = this.laserState.get(key) ?? false;
-          const next = !cur;
-          this.laserState.set(key, next);
-          // debug logging to help investigate non-toggling traps
-          // inspect in browser console: logs key and new state every toggle
-          // (only logs for lasers to avoid excessive output)
-          // eslint-disable-next-line no-console
-          console.debug(`[Trap] Laser ${key} -> ${next}`);
+          this.laserState.set(key, !cur);
         }, 3000);
         this.laserIntervals.push(id);
       }, initialDelay);
