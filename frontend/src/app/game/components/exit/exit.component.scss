@@ -1,0 +1,30 @@
+:host {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: block;
+  z-index: 3;
+}
+
+.exit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.exit-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  user-select: none;
+}
+
+.exit.unlocked .exit-image {
+  filter: brightness(1.08);
+}
