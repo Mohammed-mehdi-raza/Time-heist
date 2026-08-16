@@ -195,6 +195,10 @@ export class PlayerService {
     this.animationFrameId = requestAnimationFrame(this.runMovementLoop);
   };
 
+  get isMoving(): boolean {
+    return this.pressedKeys.size > 0;
+  }
+
   private movePlayer(): void {
     const state = this.gameService.currentState;
     if (!state || state.status !== 'running') return;
