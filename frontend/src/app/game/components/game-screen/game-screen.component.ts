@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { GameMap } from '../../models/map.model';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,9 @@ import { HeistModalComponent, HeistStats } from '../heist-modal/heist-modal.comp
 import { GameTimerService } from '../../services/game-timer.service';
 import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
 import { Router } from '@angular/router';
+import { AudioService } from '../../services/audio.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game-screen',
@@ -16,9 +19,10 @@ import { Router } from '@angular/router';
   templateUrl: './game-screen.component.html',
   styleUrl: './game-screen.component.scss'
 })
-export class GameScreenComponent implements OnInit {
+export class GameScreenComponent implements OnInit, OnDestroy {
 
   gameMap?: GameMap;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private readonly http: HttpClient,
@@ -26,6 +30,7 @@ export class GameScreenComponent implements OnInit {
     private readonly playerService: PlayerService,
     private readonly timerService: GameTimerService,
     private readonly router: Router,
+    private readonly audioService: AudioService,
   ) {}
 
   get currentTime(): number {
@@ -42,6 +47,10 @@ export class GameScreenComponent implements OnInit {
 
   get isGameLost(): boolean {
     return this.gameService.currentState?.status === 'lost';
+  }
+
+  get isSoundMuted(): boolean {
+    return this.audioService.isMuted();
   }
 
   get heistStats(): HeistStats {
@@ -73,10 +82,16 @@ export class GameScreenComponent implements OnInit {
     this.gameService.startGame(this.gameMap);
     this.timerService.start();
     this.playerService.startListening();
+    this.audioService.startMusic();
   }
 
   goToMainMenu(): void {
+    this.audioService.stopMusic();
     this.router.navigate(['']);
+  }
+
+  toggleSound(): void {
+    this.audioService.toggleMute();
   }
 
   ngOnInit(): void {
@@ -86,6 +101,25 @@ export class GameScreenComponent implements OnInit {
         this.gameMap = gameMap;
         this.restartGame();
       });
+
+    // Listen to game state changes to play appropriate sounds
+    this.gameService.gameState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state) => {
+        if (state?.status === 'won') {
+          this.audioService.stopMusic();
+          this.audioService.playWin();
+        } else if (state?.status === 'lost') {
+          this.audioService.stopMusic();
+          this.audioService.playGameOver();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.audioService.stopMusic();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

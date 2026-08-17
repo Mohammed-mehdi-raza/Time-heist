@@ -1,0 +1,338 @@
+TIME HEIST - ANGULAR GAME SOUND SYSTEM
+
+1. SOUND FILE STRUCTURE
+
+src/
+└── assets/
+    └── sounds/
+        ├── background-music.mp3
+        ├── diamond-pickup.mp3
+        ├── key-pickup.mp3
+        ├── trap.mp3
+        ├── alarm.mp3
+        ├── guard-alert.mp3
+        ├── door-open.mp3
+        ├── game-win.mp3
+        └── game-over.mp3
+
+For the 2-day MVP, start with:
+- Background music
+- Diamond/pickup sound
+- Alarm/guard alert
+- Trap sound
+- Win sound
+- Game-over sound
+
+
+2. CREATE AUDIOSERVICE
+
+Location:
+game/
+└── services/
+    └── audio.service.ts
+
+Example:
+
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AudioService {
+
+  private sounds = {
+    pickup: new Audio('assets/sounds/diamond-pickup.mp3'),
+    alarm: new Audio('assets/sounds/alarm.mp3'),
+    win: new Audio('assets/sounds/game-win.mp3'),
+    gameOver: new Audio('assets/sounds/game-over.mp3'),
+    door: new Audio('assets/sounds/door-open.mp3')
+  };
+
+  playPickup(): void {
+    this.play(this.sounds.pickup);
+  }
+
+  playAlarm(): void {
+    this.play(this.sounds.alarm);
+  }
+
+  playWin(): void {
+    this.play(this.sounds.win);
+  }
+
+  playGameOver(): void {
+    this.play(this.sounds.gameOver);
+  }
+
+  playDoor(): void {
+    this.play(this.sounds.door);
+  }
+
+  private play(audio: HTMLAudioElement): void {
+    audio.currentTime = 0;
+    audio.play().catch(error => {
+      console.log('Audio playback blocked:', error);
+    });
+  }
+}
+
+
+3. USING AUDIO IN THE GAME
+
+Inject AudioService:
+
+constructor(private audioService: AudioService) {}
+
+Diamond collection:
+
+collectDiamond(): void {
+  this.hasDiamond = true;
+  this.audioService.playPickup();
+}
+
+Trap:
+
+this.audioService.playAlarm();
+
+Victory:
+
+this.audioService.playWin();
+
+Game over:
+
+this.audioService.playGameOver();
+
+
+4. BACKGROUND MUSIC
+
+private backgroundMusic =
+  new Audio('assets/sounds/background-music.mp3');
+
+startMusic(): void {
+  this.backgroundMusic.loop = true;
+  this.backgroundMusic.volume = 0.3;
+
+  this.backgroundMusic.play().catch(error => {
+    console.log('Music playback blocked:', error);
+  });
+}
+
+stopMusic(): void {
+  this.backgroundMusic.pause();
+  this.backgroundMusic.currentTime = 0;
+}
+
+
+5. START MUSIC AFTER USER INTERACTION
+
+Browsers can block automatic audio playback.
+
+Do not start music automatically in ngOnInit().
+
+Start it after the user clicks PLAY:
+
+startGame(): void {
+  this.audioService.startMusic();
+  this.router.navigate(['/game']);
+}
+
+Flow:
+
+MAIN MENU
+    |
+    v
+User clicks PLAY
+    |
+    v
+Start background music
+    |
+    v
+Open game
+
+
+6. STOP MUSIC WHEN GAME ENDS
+
+endGame(): void {
+  this.audioService.stopMusic();
+  // Show win/game-over screen
+}
+
+
+7. MUTE / UNMUTE
+
+private muted = false;
+
+toggleMute(): void {
+  this.muted = !this.muted;
+}
+
+isMuted(): boolean {
+  return this.muted;
+}
+
+Update play():
+
+private play(audio: HTMLAudioElement): void {
+  if (this.muted) {
+    return;
+  }
+
+  audio.currentTime = 0;
+
+  audio.play().catch(error => {
+    console.log('Audio playback blocked:', error);
+  });
+}
+
+
+8. SOUND BUTTON IN HUD
+
+Example:
+
++------------------------+
+|  🔊 Sound       ON     |
++------------------------+
+
+Or simply:
+
+🔊
+
+The HUD can call:
+
+toggleSound(): void {
+  this.audioService.toggleMute();
+}
+
+
+9. RECOMMENDED TIME HEIST SOUNDS
+
+PLAYER:
+- Diamond collected -> Pickup sound
+- Key collected -> Key sound
+- Exit reached -> Door/win sound
+
+GUARD:
+- Guard detects player -> Alarm
+- Guard loses player -> Optional sound
+
+TRAPS:
+- Trap activated -> Trap sound
+- Player hit -> Alarm/damage sound
+
+GAME:
+- Game starts -> Background music
+- Low time -> Optional warning sound
+- Victory -> Win sound
+- Game over -> Game-over sound
+
+
+10. FOOTSTEP SOUNDS
+
+Do not play a sound every time movement code executes.
+
+Movement may run 30-60 times per second, causing overlapping audio.
+
+For the 2-day MVP, skip footsteps initially.
+
+If footsteps are added later:
+- Use a cooldown
+- Play every few movement frames
+- Stop when the player stops
+
+
+11. AUDIO ARCHITECTURE
+
+Angular Game
+     |
+     v
+AudioService
+     |
+     +-- Background Music
+     +-- Sound Effects
+     +-- Mute/Unmute
+     +-- Volume Control
+     |
+     v
+assets/sounds/
+
+
+12. MVP IMPLEMENTATION ORDER
+
+Step 1: Create src/assets/sounds/
+
+Step 2: Add:
+- background-music.mp3
+- diamond-pickup.mp3
+- alarm.mp3
+- trap.mp3
+- game-win.mp3
+- game-over.mp3
+
+Step 3: Create game/services/audio.service.ts
+
+Step 4: Implement:
+- playPickup()
+- playAlarm()
+- playWin()
+- playGameOver()
+- startMusic()
+- stopMusic()
+
+Step 5: Connect sounds to game events.
+
+Step 6: Add mute/unmute to HUD.
+
+Step 7: Test audio in Chrome.
+
+
+13. TEAM PRIORITY
+
+HIGH:
+- Background music
+- Diamond/pickup
+- Alarm
+- Trap
+- Win
+- Game-over
+
+MEDIUM:
+- Door
+- Key pickup
+- Guard alert
+
+LOW:
+- Footsteps
+- Environmental ambience
+- Multiple sound variations
+
+
+14. FINAL FLOW
+
+User clicks PLAY
+       |
+       v
+AudioService.startMusic()
+       |
+       v
+Game starts
+       |
+       +--------------------+
+       |                    |
+       v                    v
+Diamond collected       Guard detects player
+       |                    |
+       v                    v
+playPickup()            playAlarm()
+       |
+       v
+Player reaches exit
+       |
+       v
+playWin()
+       |
+       v
+stopMusic()
+
+For the 2-day Time Heist MVP, a simple AudioService is enough.
+There is no need for a third-party audio library unless the game later
+requires advanced audio management.

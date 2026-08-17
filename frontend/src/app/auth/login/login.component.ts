@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +17,13 @@ export class LoginComponent {
 
   private formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly toastService = inject(ToastService);
 
   switchToRegister(): void {
     this.registerRequested.emit();
   }
 
   isSubmitting = false;
-  errorMessage = '';
 
   loginForm = this.formBuilder.nonNullable.group({
     username: [
@@ -50,8 +51,6 @@ export class LoginComponent {
   }
 
   login(): void {
-    this.errorMessage = '';
-
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -62,14 +61,16 @@ export class LoginComponent {
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
         this.isSubmitting = false;
+        this.toastService.success('Login successful!');
         this.loggedIn.emit();
       },
       error: error => {
         this.isSubmitting = false;
-        this.errorMessage =
+        const errorMessage =
           error.error?.message ||
           error.error?.data?.message ||
           'Invalid username or password';
+        this.toastService.error(errorMessage);
       }
     });
   }

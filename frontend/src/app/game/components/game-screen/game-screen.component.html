@@ -2,6 +2,9 @@
     @if (gameMap) {
         <div class="gameHud">
             <div class="timerBadge">TIME: {{ formatTime(currentTime) }}</div>
+            <button class="soundToggleButton" (click)="toggleSound()" [class.muted]="isSoundMuted">
+                {{ isSoundMuted ? '🔇' : '🔊' }}
+            </button>
         </div>
 
         <app-map [gameMap]="gameMap"></app-map>

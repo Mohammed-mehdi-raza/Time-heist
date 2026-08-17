@@ -3,6 +3,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -17,14 +18,13 @@ export class RegisterComponent {
   private formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   switchToLogin(): void {
     this.loginRequested.emit();
   }
 
   isSubmitting = false;
-  errorMessage = '';
-  successMessage = '';
 
   registerForm = this.formBuilder.nonNullable.group(
     {
@@ -67,9 +67,6 @@ export class RegisterComponent {
   }
 
   register(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
-
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
@@ -82,18 +79,18 @@ export class RegisterComponent {
     this.authService.register(request).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.successMessage =
-          'Registration successful. Redirecting to login...';
+        this.toastService.success('Registration successful! Redirecting to login...');
+        this.registerForm.reset();
 
         setTimeout(() => {
           this.loginRequested.emit();
-          this.registerForm.reset();
         }, 1200);
       },
       error: error => {
         this.isSubmitting = false;
-        this.errorMessage =
+        const errorMessage =
           error.error?.message || 'Registration failed';
+        this.toastService.error(errorMessage);
       }
     });
   }
