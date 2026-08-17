@@ -54,12 +54,6 @@
             }
           </div>
 
-          @if (errorMessage) {
-            <div class="server-error">
-              {{ errorMessage }}
-            </div>
-          }
-
           <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
             @if (isSubmitting) {
               Logging in...

@@ -20,17 +20,14 @@
 }
 
 .gameHud {
- position: absolute; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 48px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  padding: 0 14px; 
-  box-sizing: border-box; 
-  z-index: 100; 
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
 .timerBadge {
@@ -43,6 +40,40 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   box-shadow: 0 0 12px rgba(14, 165, 233, 0.3);
+}
+
+.soundToggleButton {
+  background: rgba(2, 6, 23, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  color: #f8fafc;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(2, 6, 23, 0.9);
+    box-shadow: 0 0 16px rgba(14, 165, 233, 0.5);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.muted {
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+
+    &:hover {
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.5);
+    }
+  }
 }
 
 .gameMessageBar {

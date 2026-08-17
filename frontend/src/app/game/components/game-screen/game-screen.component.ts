@@ -9,6 +9,9 @@ import { HeistModalComponent, HeistStats } from '../heist-modal/heist-modal.comp
 import { GameTimerService } from '../../services/game-timer.service';
 import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
 import { Router } from '@angular/router';
+import { AudioService } from '../../services/audio.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game-screen',
@@ -20,6 +23,7 @@ import { Router } from '@angular/router';
 export class GameScreenComponent implements OnInit, OnDestroy {
 
   gameMap?: GameMap;
+  private destroy$ = new Subject<void>();
   
   // Death Animation State
   deathPhase: 0 | 1 | 2 | 3 = 0; 
@@ -33,6 +37,7 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     private readonly playerService: PlayerService,
     private readonly timerService: GameTimerService,
     private readonly router: Router,
+    private readonly audioService: AudioService,
   ) {}
 
   // --- GETTERS ---
@@ -53,6 +58,9 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     return this.gameService.currentState?.status === 'lost';
   }
 
+  get isSoundMuted(): boolean {
+    return this.audioService.isMuted();
+  }
   get isDying(): boolean {
     return this.gameService.currentState?.status === 'dying';
   }
@@ -95,13 +103,17 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.gameService.startGame(this.gameMap);
     this.timerService.start();
     this.playerService.startListening();
+    this.audioService.startMusic();
   }
 
   goToMainMenu(): void {
+    this.audioService.stopMusic();
     this.router.navigate(['']);
   }
 
-  // --- LIFECYCLE ---
+  toggleSound(): void {
+    this.audioService.toggleMute();
+  }
 
   ngOnInit(): void {
     this.http
@@ -111,6 +123,18 @@ export class GameScreenComponent implements OnInit, OnDestroy {
         this.restartGame();
       });
 
+    // Listen to game state changes to play appropriate sounds
+    this.gameService.gameState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((state) => {
+        if (state?.status === 'won') {
+          this.audioService.stopMusic();
+          this.audioService.playWin();
+        } else if (state?.status === 'lost') {
+          this.audioService.stopMusic();
+          this.audioService.playGameOver();
+        }
+      });
     // Listen for the 'dying' state to start the animation
     this.stateSub = this.gameService.gameState$.subscribe(state => {
       if (state?.status === 'dying' && this.deathPhase === 0) {
@@ -146,5 +170,8 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.stateSub?.unsubscribe();
     this.resetDeathAnimation();
     this.playerService.stopListening();
+    this.audioService.stopMusic();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

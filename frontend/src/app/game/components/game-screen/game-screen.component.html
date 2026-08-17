@@ -3,6 +3,9 @@
         <div class="gameHud">
             <button class="menuButton" type="button" (click)="goToMainMenu()">MAIN MENU</button>
             <div class="timerBadge">TIME: {{ formatTime(currentTime) }}</div>
+            <button class="soundToggleButton" (click)="toggleSound()" [class.muted]="isSoundMuted">
+                {{ isSoundMuted ? '🔇' : '🔊' }}
+            </button>
         </div>
         <app-map [gameMap]="gameMap"></app-map>
 

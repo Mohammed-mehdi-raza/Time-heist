@@ -90,18 +90,6 @@
           }
         </div>
 
-        @if (errorMessage) {
-          <div class="server-error">
-            {{ errorMessage }}
-          </div>
-        }
-
-        @if (successMessage) {
-          <div class="success-message">
-            {{ successMessage }}
-          </div>
-        }
-
         <button
           type="submit"
           [disabled]="registerForm.invalid || isSubmitting"

@@ -4,6 +4,7 @@ import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
 import { TrapService } from './trap.service';
+import { AudioService } from './audio.service';
 
 @Injectable(
   {
@@ -11,7 +12,7 @@ import { TrapService } from './trap.service';
   }
 )
 export class CollisionService {
-  constructor(private readonly gameService: GameService, private readonly trapService: TrapService) {
+  constructor(private readonly gameService: GameService, private readonly trapService: TrapService, private readonly audioService: AudioService) {
       interval(100).subscribe(() => this.checkCurrentPlayerHazard()); 
   }
 
@@ -27,6 +28,7 @@ export class CollisionService {
     // If a spike is currently up at this position, behave as opaque and show an "Ouch!" message
    if (this.trapService.isSpikeUp(position)) {
       this.gameService.loseGame('YOU WERE CAUGHT BY A TRAP');
+      this.audioService.playTrap();
       return true;
     }
 
