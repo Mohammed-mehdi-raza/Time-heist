@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MapComponent } from '../map/map.component';
 import { GameMap } from '../../models/map.model';
 import { HttpClient } from '@angular/common/http';
@@ -16,9 +17,15 @@ import { Router } from '@angular/router';
   templateUrl: './game-screen.component.html',
   styleUrl: './game-screen.component.scss'
 })
-export class GameScreenComponent implements OnInit {
+export class GameScreenComponent implements OnInit, OnDestroy {
 
   gameMap?: GameMap;
+  
+  // Death Animation State
+  deathPhase: 0 | 1 | 2 | 3 = 0; 
+  isFalling = false;
+  private stateSub?: Subscription;
+  private deathTimers: any[] = [];
 
   constructor(
     private readonly http: HttpClient,
@@ -27,6 +34,8 @@ export class GameScreenComponent implements OnInit {
     private readonly timerService: GameTimerService,
     private readonly router: Router,
   ) {}
+
+  // --- GETTERS ---
 
   get currentTime(): number {
     return this.gameService.currentState?.remainingTime ?? 0;
@@ -44,7 +53,11 @@ export class GameScreenComponent implements OnInit {
     return this.gameService.currentState?.status === 'lost';
   }
 
-    get heistStats(): HeistStats {
+  get isDying(): boolean {
+    return this.gameService.currentState?.status === 'dying';
+  }
+
+  get heistStats(): HeistStats {
     const state = this.gameService.currentState;
     const elapsedSeconds = state ? Math.max(0, state.remainingTime) : 0;
 
@@ -56,6 +69,8 @@ export class GameScreenComponent implements OnInit {
       totalScore: state?.score ?? 0
     };
   }
+
+  // --- METHODS ---
 
   formatTime(totalSeconds: number): string {
     const safeSeconds = Math.max(0, totalSeconds);
@@ -70,6 +85,9 @@ export class GameScreenComponent implements OnInit {
   }
 
   restartGame(): void {
+    // Reset death animation if restarting from a death state
+    this.resetDeathAnimation(); 
+
     if (!this.gameMap) {
       return;
     }
@@ -83,6 +101,8 @@ export class GameScreenComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  // --- LIFECYCLE ---
+
   ngOnInit(): void {
     this.http
       .get<GameMap>('assets/maps/map1.json')
@@ -90,6 +110,41 @@ export class GameScreenComponent implements OnInit {
         this.gameMap = gameMap;
         this.restartGame();
       });
+
+    // Listen for the 'dying' state to start the animation
+    this.stateSub = this.gameService.gameState$.subscribe(state => {
+      if (state?.status === 'dying' && this.deathPhase === 0) {
+        this.startDeathAnimation();
+      }
+    });
   }
 
+  startDeathAnimation(): void {
+    this.deathPhase = 1;
+    this.isFalling = true;
+
+    const t1 = setTimeout(() => {
+      this.deathPhase = 2;
+      this.isFalling = false;
+    }, 1500);
+
+    const t2 = setTimeout(() => {
+      this.deathPhase = 3;
+    }, 2200);
+    
+    this.deathTimers.push(t1, t2);
+  }
+
+  resetDeathAnimation(): void {
+    this.deathTimers.forEach(t => clearTimeout(t));
+    this.deathTimers = [];
+    this.deathPhase = 0;
+    this.isFalling = false;
+  }
+
+  ngOnDestroy(): void {
+    this.stateSub?.unsubscribe();
+    this.resetDeathAnimation();
+    this.playerService.stopListening();
+  }
 }

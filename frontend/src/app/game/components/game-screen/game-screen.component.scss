@@ -4,17 +4,6 @@
   min-height: 100vh;
 }
 
-// .gameScreenContainer {
-//   position: relative;
-//   width: 100%;
-//   min-height: 100vh;
-//   overflow: hidden;
-//   background-image: url('/assets/images/background.png');
-//   background-size: cover;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   background-attachment: fixed;
-// }
 .gameScreenContainer {
   position: relative;
   display: flex;
@@ -130,4 +119,73 @@
   color: #dff8ff;
   border-color: #27c6e8; 
   box-shadow: 0 0 10px rgba(39, 198, 232, 0.18); 
+  }
+
+
+/* ... your existing styles ... */
+
+.death-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); /* Darkens the screen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.death-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.death-text {
+  color: #ef4444; 
+  font-family: 'Arial Black', sans-serif;
+  font-size: 4rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 15px rgba(239, 68, 68, 0.8);
+  margin: 0;
+  animation: slideDown 0.5s ease-out;
+}
+
+.death-sprite-container {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: flex-end; 
+  justify-content: center;
+}
+
+.death-sprite {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: bottom center; 
+}
+
+.death-sprite.rotating {
+  animation: fallRight 1.5s ease-in forwards;
+}
+
+@keyframes fallRight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(85deg); } 
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

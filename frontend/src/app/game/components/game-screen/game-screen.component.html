@@ -11,6 +11,26 @@
         }
     }
 
+    <!-- DEATH ANIMATION OVERLAY -->
+    @if (isDying) {
+      <div class="death-overlay">
+        <div class="death-popup">
+          <h2 class="death-text">ELIMINATED</h2>
+          <div class="death-sprite-container">
+            @if (deathPhase === 1) {
+              <img src="assets/Newchar/die/die1.png" class="death-sprite" [class.rotating]="isFalling" />
+            }
+            @if (deathPhase === 2) {
+              <img src="assets/Newchar/die/die2.png" class="death-sprite" />
+            }
+            @if (deathPhase === 3) {
+              <img src="assets/Newchar/die/die3.png" class="death-sprite" />
+            }
+          </div>
+        </div>
+      </div>
+    }
+
     @if (isGameWon) {
         <app-heist-modal [stats]="heistStats"></app-heist-modal>
     }
