@@ -88,6 +88,10 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
+    get currentHealth(): number {
+    return this.gameService.currentState?.player.health ?? 0; // NEW: reads current player health
+  }
+
   restartGame(): void {
     // Reset death animation if restarting from a death state
     this.resetDeathAnimation(); 

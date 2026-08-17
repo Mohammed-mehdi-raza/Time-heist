@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { interval } from 'rxjs'; 
 import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
@@ -11,7 +12,9 @@ import { AudioService } from './audio.service';
   }
 )
 export class CollisionService {
-  constructor(private readonly gameService: GameService, private readonly trapService: TrapService, private readonly audioService: AudioService) {}
+  constructor(private readonly gameService: GameService, private readonly trapService: TrapService, private readonly audioService: AudioService) {
+      interval(100).subscribe(() => this.checkCurrentPlayerHazard()); 
+  }
 
   isWall(position: Position, gameMap: GameMap): boolean {
     if (
@@ -23,11 +26,8 @@ export class CollisionService {
       return true;
     }
     // If a spike is currently up at this position, behave as opaque and show an "Ouch!" message
-    if (this.trapService.isSpikeUp(position)) {
-      const state = this.gameService.currentState;
-      if (state) {
-        this.gameService.updateState({ eventMessage: 'Ouch!' });
-      }
+   if (this.trapService.isSpikeUp(position)) {
+      this.gameService.loseGame('YOU WERE CAUGHT BY A TRAP');
       this.audioService.playTrap();
       return true;
     }
@@ -81,28 +81,23 @@ export class CollisionService {
   }
 
   private handleTrap(): void {
+    this.gameService.loseGame('YOU WERE CAUGHT BY A TRAP'); 
+  }
+
+  private checkCurrentPlayerHazard(): void {
     const state = this.gameService.currentState;
     if (!state || state.status !== 'running') {
       return;
     }
 
-    if (!state) {
+    if (!state || state.status !== 'running') {
       return;
     }
 
-    const updatedHealth = state.player.health - 1;
+    const playerPosition = state.player.position;
 
-    if (updatedHealth <= 0) {
-      this.gameService.loseGame('You were caught by a trap');
-      return;
+    if (this.trapService.isSpikeUp(playerPosition)) {
+      this.gameService.loseGame('YOU WERE CAUGHT BY A TRAP'); 
     }
-
-    this.gameService.updateState({
-      player: {
-        ...state.player,
-        health: updatedHealth
-      },
-      eventMessage: 'You stepped on a trap'
-    });
   }
 }

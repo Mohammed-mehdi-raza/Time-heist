@@ -83,7 +83,6 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
-
   text-transform: uppercase;
   
   /* Sizing & Spacing */
@@ -120,12 +119,39 @@
   from {
     opacity: 0;
     transform: translate(-50%, 10px);
-  }
+    -webkit-transform: translate(-50%, 10px);
+    -moz-transform: translate(-50%, 10px);
+    -ms-transform: translate(-50%, 10px);
+    -o-transform: translate(-50%, 10px);
+}
   to {
     opacity: 1;
     transform: translate(-50%, 0);
-  }
+    -webkit-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
 }
+}
+.menuButton {
+  padding: 11px 15px; 
+  border: 1px solid #244d63; 
+  border-radius: 4px; 
+  background: rgba(5, 17, 28, 0.95); 
+  color: #9bb4c1; 
+
+  font-size: 12px; 
+  font-weight: 600;
+  letter-spacing: 1px; 
+  cursor: pointer; 
+}
+
+.menuButton:hover {
+  color: #dff8ff;
+  border-color: #27c6e8; 
+  box-shadow: 0 0 10px rgba(39, 198, 232, 0.18); 
+  }
+
 
 /* ... your existing styles ... */
 
