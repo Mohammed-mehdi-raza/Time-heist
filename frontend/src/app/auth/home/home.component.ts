@@ -28,7 +28,7 @@ export class HomeComponent {
   }
 
   aboutUs(): void {
-    console.log('About Us clicked');
+    this.router.navigate(['/about-us']);
   }
 
   profile(): void {
