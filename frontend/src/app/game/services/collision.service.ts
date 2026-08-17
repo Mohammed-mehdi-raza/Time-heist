@@ -3,6 +3,7 @@ import { GameMap } from '../models/map.model';
 import { Position } from '../models/position.model';
 import { GameService } from './game.service';
 import { TrapService } from './trap.service';
+import { AudioService } from './audio.service';
 
 @Injectable(
   {
@@ -10,7 +11,7 @@ import { TrapService } from './trap.service';
   }
 )
 export class CollisionService {
-  constructor(private readonly gameService: GameService, private readonly trapService: TrapService) {}
+  constructor(private readonly gameService: GameService, private readonly trapService: TrapService, private readonly audioService: AudioService) {}
 
   isWall(position: Position, gameMap: GameMap): boolean {
     if (
@@ -27,6 +28,7 @@ export class CollisionService {
       if (state) {
         this.gameService.updateState({ eventMessage: 'Ouch!' });
       }
+      this.audioService.playTrap();
       return true;
     }
 
@@ -35,6 +37,9 @@ export class CollisionService {
 
   checkInteractions(position: Position): void {
     const state = this.gameService.currentState;
+    if (!state || state.status !== 'running') {
+      return; 
+    }
 
     if (!state || state.status !== 'running') {
       return;
@@ -77,6 +82,9 @@ export class CollisionService {
 
   private handleTrap(): void {
     const state = this.gameService.currentState;
+    if (!state || state.status !== 'running') {
+      return;
+    }
 
     if (!state) {
       return;
