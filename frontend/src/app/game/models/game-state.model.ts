@@ -7,7 +7,8 @@ export type GameStatus =
   | 'running'
   | 'won'
   | 'lost'
-  | 'paused';
+  | 'paused'
+  | 'dying';
 
 export interface GameState {
   status: GameStatus;
