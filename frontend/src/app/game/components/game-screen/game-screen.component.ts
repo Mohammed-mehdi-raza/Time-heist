@@ -44,7 +44,7 @@ export class GameScreenComponent implements OnInit {
     return this.gameService.currentState?.status === 'lost';
   }
 
-  get heistStats(): HeistStats {
+    get heistStats(): HeistStats {
     const state = this.gameService.currentState;
     const elapsedSeconds = state ? Math.max(0, state.remainingTime) : 0;
 
@@ -63,6 +63,10 @@ export class GameScreenComponent implements OnInit {
     const seconds = safeSeconds % 60;
 
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+    get currentHealth(): number {
+    return this.gameService.currentState?.player.health ?? 0; // NEW: reads current player health
   }
 
   restartGame(): void {
