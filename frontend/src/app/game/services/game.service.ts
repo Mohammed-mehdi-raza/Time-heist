@@ -99,12 +99,35 @@ export class GameService {
     });
   }
 
-  loseGame(message: string): void {
-    this.updateState({
-      status: 'lost',
-      eventMessage: message
-    });
-  }
+  // loseGame(message: string): void {
+  //   this.updateState({
+  //     status: 'lost',
+  //     eventMessage: message
+  //   });
+  // }
+    loseGame(message: string): void {
+      const currentState = this.currentState;
+      // Prevent multiple deaths from triggering the animation repeatedly
+      if (!currentState || currentState.status !== 'running') {
+        return; 
+      }
+
+      // 1. Trigger the animation state
+      this.updateState({
+        status: 'dying',
+        eventMessage: message
+      });
+
+      // 2. Wait 3 seconds for the animation to finish, then show the Game Over screen
+      setTimeout(() => {
+        if (this.currentState?.status === 'dying') {
+          this.updateState({
+            status: 'lost',
+            eventMessage: message
+          });
+        }
+      }, 3000); 
+    }
 
   pauseGame(): void {
     if (this.currentState?.status === 'running') {

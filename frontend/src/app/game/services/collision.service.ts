@@ -35,6 +35,9 @@ export class CollisionService {
 
   checkInteractions(position: Position): void {
     const state = this.gameService.currentState;
+    if (!state || state.status !== 'running') {
+      return; 
+    }
 
     if (!state || state.status !== 'running') {
       return;
@@ -77,6 +80,9 @@ export class CollisionService {
 
   private handleTrap(): void {
     const state = this.gameService.currentState;
+    if (!state || state.status !== 'running') {
+      return;
+    }
 
     if (!state) {
       return;

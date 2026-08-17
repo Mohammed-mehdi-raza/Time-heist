@@ -1,32 +1,33 @@
 .guard {
   position: absolute;
-  width: 5%;
-  aspect-ratio: 1;
   transform: translate(-50%, -50%);
   z-index: 8;
-  overflow: visible;
+  
+  /* CRITICAL: Allows the vision cone to render outside the guard's box */
+  overflow: visible; 
+  
   pointer-events: none;
-  transition: left 0.6s linear, top 0.6s linear;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
+  
+  /* CRITICAL: Removes visual lag so the cone matches the collision logic exactly */
+  transition: none; 
 }
 
 .guard-range {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 100%;
-  height: 70%;
   transform-origin: 0 50%;
   transform: translate(0, -50%);
+  
+  /* DO NOT put width or height here, let the HTML bindings handle it */
+  
   background: linear-gradient(90deg, rgba(239, 68, 68, 0.22), rgba(239, 68, 68, 0.04));
   border: 2px solid rgba(239, 68, 68, 0.9);
   box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
   clip-path: polygon(0 50%, 100% 0, 100% 100%);
   border-radius: 0 16px 16px 0;
   z-index: 7;
+  pointer-events: none;
 }
 
 .guard-range--up {
@@ -38,7 +39,7 @@
 }
 
 .guard-range--left {
-  transform: translate(-100%, -50%) rotate(180deg);
+  transform: translate(0, -50%) rotate(180deg);
 }
 
 .guard-range--right {
@@ -53,9 +54,8 @@
   display: block;
   user-select: none;
   -webkit-user-drag: none;
-  z-index: 9;
+  z-index: 9; /* Above the vision cone */
   transform-origin: center;
-  transition: transform 0.15s ease-out;
 }
 
 .guard-sprite--left {
