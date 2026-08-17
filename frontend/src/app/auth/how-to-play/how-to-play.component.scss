@@ -1,0 +1,259 @@
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.how-to-play-container {
+  min-height: 100vh;
+  background-image: url('/assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 15px;
+
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+
+    .diamond-logo {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  .title {
+    font-size: 32px;
+    letter-spacing: 4px;
+    margin: 5px 0 0 0;
+    font-weight: 300;
+
+    .highlight {
+      color: #e63946;
+      font-weight: 700;
+    }
+  }
+}
+
+.modal-card {
+  background: rgba(16, 26, 43, 0.75);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 12px;
+  padding: 24px 30px;
+  width: 100%;
+  max-width: 1100px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 36px;
+  letter-spacing: 3px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-weight: 400;
+  color: #e2f1ff;
+}
+
+.sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 20px;
+}
+
+.section-card {
+  background: rgba(10, 17, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: #b0c4de;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+}
+
+/* 1. Controls Styling */
+.controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.wasd-layout, .arrows-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.key-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.key {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.key-label {
+  font-size: 10px;
+  color: #8fa3bf;
+  margin-top: 4px;
+}
+
+/* 2. Objects Styling */
+.objects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  width: 100%;
+}
+
+.object-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  &.guards {
+    grid-column: span 1;
+  }
+
+  .sprite {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+    image-rendering: auto;
+    filter: drop-shadow(0 0 8px rgba(106, 220, 255, 0.35));
+  }
+
+  span {
+    font-size: 12px;
+    color: #cfdbe6;
+    margin-top: 4px;
+  }
+}
+
+.guards-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.guard-sprite,
+.hero-sprite,
+.laser-sprite,
+.spike-sprite,
+.diamond-sprite,
+.door-sprite {
+  width: 42px;
+  height: 42px;
+}
+
+/* 3. Mission Styling */
+.mission-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .mission-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(106, 220, 255, 0.25));
+    }
+
+    p {
+      margin: 4px 0 0 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .flow-arrow {
+    color: #4a6fa5;
+    font-size: 14px;
+  }
+}
+
+.section-footer {
+  margin-top: auto;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #8fa3bf;
+  text-align: center;
+
+  &.highlight-text {
+    color: #e2f1ff;
+  }
+}
+
+/* Back Button */
+.btn-back {
+  margin-top: 25px;
+  background: rgba(20, 35, 60, 0.8);
+  border: 1px solid rgba(0, 180, 216, 0.4);
+  color: #d1e8ff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 180, 216, 0.3);
+    border-color: #00b4d8;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.4);
+  }
+}

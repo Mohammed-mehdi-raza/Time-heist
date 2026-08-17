@@ -20,12 +20,11 @@ export class HomeComponent {
   private readonly authService = inject(AuthService);
 
   play(): void {
-    console.log('Play clicked');
     this.router.navigate(['/game']);
   }
 
   howToPlay(): void {
-    console.log('How to Play clicked');
+    this.router.navigate(['/howToPlay']);
   }
 
   aboutUs(): void {

@@ -1,0 +1,102 @@
+<div class="how-to-play-container">
+  <div class="header">
+    <div class="logo">
+        <img class="diamond-logo" src="/assets/images/diamond.png" alt="Steal the diamond" />
+    </div>
+    <h1 class="title">TIME <span class="highlight">HEIST</span></h1>
+  </div>
+
+  <div class="modal-card">
+    <h2 class="modal-title">HOW TO PLAY</h2>
+
+    <div class="sections-grid">
+      <!-- Section 1: Player Controls -->
+      <div class="section-card">
+        <h3>1. PLAYER CONTROLS</h3>
+        <div class="controls-wrapper">
+          <div class="wasd-layout">
+            <div class="key-row"><span class="key">W</span></div>
+            <div class="key-row">
+              <span class="key">A</span>
+              <span class="key">S</span>
+              <span class="key">D</span>
+            </div>
+            <span class="key-label">WASD</span>
+          </div>
+
+          <div class="arrows-layout">
+            <div class="key-row"><span class="key">↑</span></div>
+            <div class="key-row">
+              <span class="key">←</span>
+              <span class="key">↓</span>
+              <span class="key">→</span>
+            </div>
+            <span class="key-label">UP, DOWN, LEFT, RIGHT</span>
+          </div>
+        </div>
+        <p class="section-footer">MOVE CHARACTER</p>
+      </div>
+
+      <!-- Section 2: Game Objects Guide -->
+      <div class="section-card">
+        <h3>2. GAME OBJECTS GUIDE</h3>
+        <div class="objects-grid">
+          <div class="object-item">
+            <img class="sprite hero-sprite" src="/assets/Newchar/Front - Walking/Front - Walking_000.png" alt="Main character" />
+            <span>Main Character</span>
+          </div>
+          <div class="object-item guards">
+            <div class="guards-group">
+              <img class="sprite guard-sprite" src="/assets/sprites/Guard 1 PNG/Walking/Wraith_03_Moving Forward_000.png" alt="Guard 1" />
+              <img class="sprite guard-sprite" src="/assets/sprites/Guard 2 PNG/Walking/0_Fallen_Angels_Walking_000.png" alt="Guard 2" />
+              <img class="sprite guard-sprite red-guard" src="/assets/sprites/Guard 3 PNG/Walking/Wraith_02_Moving Forward_000.png" alt="Guard 3" />
+            </div>
+            <span>Security Guards</span>
+          </div>
+          <div class="object-item">
+            <img class="sprite laser-sprite" src="/assets/images/laserOn.png" alt="Laser trap" />
+            <span>Laser Trap</span>
+          </div>
+          <div class="object-item">
+            <img class="sprite spike-sprite" src="/assets/images/spike_up.png" alt="Spike trap" />
+            <span>Spike Trap</span>
+          </div>
+          <div class="object-item">
+            <img class="sprite diamond-sprite" src="/assets/images/diamond.png" alt="Target diamond" />
+            <span>Target Diamond</span>
+          </div>
+          <div class="object-item">
+            <img class="sprite door-sprite" src="/assets/images/escapeDoor.png" alt="Exit door" />
+            <span>Exit Door</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Your Mission -->
+      <div class="section-card">
+        <h3>3. YOUR MISSION</h3>
+        <div class="mission-flow">
+          <div class="step">
+            <img class="mission-icon" src="/assets/images/diamond.png" alt="Steal the diamond" />
+            <p>1. STEAL THE DIAMOND</p>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="step">
+            <img class="mission-icon" src="/assets/sprites/Guard 1 PNG/Walking/Wraith_03_Moving Forward_000.png" alt="Avoid guards and traps" />
+            <p>2. AVOID GUARDS & TRAPS</p>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="step">
+            <img class="mission-icon" src="/assets/images/escapeDoor.png" alt="Escape to exit door" />
+            <p>3. ESCAPE TO EXIT</p>
+          </div>
+        </div>
+        <p class="section-footer highlight-text">Exit Door opens once Diamond is stolen!</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-back" (click)="onBack()">
+    ↩ BACK TO MAIN MENU
+  </button>
+</div>
