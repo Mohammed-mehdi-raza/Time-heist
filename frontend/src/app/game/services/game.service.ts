@@ -77,24 +77,35 @@ export class GameService {
     });
   }
 
+ 
   tryEscape(): void {
     const currentState = this.currentState;
 
-    if (!currentState) {
+    if (!currentState || currentState.status !== 'running') {
       return;
     }
 
     if (!currentState.player.hasDiamond) {
-      this.updateState({
-        eventMessage: 'Collect the diamond first'
-      });
+      this.updateState({ eventMessage: 'Collect the diamond first' });
       return;
     }
 
+    // 1. CRITICAL: Explicitly set status to 'winning'
     this.updateState({
-      status: 'won',
-      eventMessage: 'You escaped successfully'
+      status: 'winning',
+      eventMessage: 'Escaping...'
     });
+
+    // 2. Wait 3.6 seconds, then finish the game
+    setTimeout(() => {
+      if (this.currentState?.status === 'winning') {
+        this.updateState({
+          status: 'won',
+          score: currentState.score + currentState.remainingTime * 10,
+          eventMessage: 'You escaped successfully'
+        });
+      }
+    }, 3600); 
   }
 
   // loseGame(message: string): void {

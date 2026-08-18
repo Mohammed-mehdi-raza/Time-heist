@@ -2,6 +2,7 @@
     @if (gameMap) {
         <div class="gameHud">
             <button class="menuButton" type="button" (click)="goToMainMenu()">MAIN MENU</button>
+            <!-- <button class="testWinButton" type="button" (click)="testWin()">TEST WIN</button> -->
             <div class="timerBadge">TIME: {{ formatTime(currentTime) }}</div>
             <button class="soundToggleButton" (click)="toggleSound()" [class.muted]="isSoundMuted">
                 {{ isSoundMuted ? '🔇' : '🔊' }}
@@ -9,7 +10,7 @@
         </div>
         <app-map [gameMap]="gameMap"></app-map>
 
-        @if (gameMessage && !isGameLost) {
+        @if (gameMessage && !isGameLost && !isWinning) {
             <div class="gameMessageBar">{{ gameMessage }}</div>
         }
     }
@@ -29,6 +30,18 @@
             @if (deathPhase === 3) {
               <img src="assets/Newchar/die/die3.png" class="death-sprite" />
             }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- WIN ANIMATION OVERLAY -->
+    @if (isWinning) {
+      <div class="win-overlay">
+        <div class="win-popup">
+          <h2 class="win-text">MISSION COMPLETE</h2>
+          <div class="win-sprite-container">
+            <img [src]="'assets/Newchar/win/win' + winPhase + '.png'" class="win-sprite" />
           </div>
         </div>
       </div>
