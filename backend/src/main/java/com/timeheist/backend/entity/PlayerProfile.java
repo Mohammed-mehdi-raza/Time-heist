@@ -35,6 +35,9 @@ public class PlayerProfile {
     @Column(length = 255)
     private String avatar;
 
+    @Column(length = 500)
+    private String bio;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

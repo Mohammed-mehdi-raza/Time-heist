@@ -32,7 +32,7 @@ export class HomeComponent {
   }
 
   profile(): void {
-    console.log('Profile clicked');
+     this.router.navigate(['/profile']);
   }
 
   logout(): void {

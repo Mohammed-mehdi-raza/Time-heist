@@ -19,19 +19,22 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final ProfileService profileService;
 
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
-            CustomUserDetailsService userDetailsService) {
+            CustomUserDetailsService userDetailsService,
+            ProfileService profileService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.profileService = profileService;
     }
 
     public void register(RegisterRequest request) {
@@ -53,7 +56,12 @@ public class AuthService {
                 passwordEncoder.encode(request.getPassword())
         );
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        profileService.createPlayerForUser(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                null
+        );
     }
 
     public String login(LoginRequest request) {

@@ -1,0 +1,61 @@
+<div class="profile-page">
+  <div class="header">
+    <div class="logo">
+      <img class="diamond-logo" src="/assets/images/diamond.png" alt="Steal the diamond" />
+    </div>
+    <h1 class="title">TIME <span class="highlight">HEIST</span></h1>
+  </div>
+
+  <div class="profile-card">
+    <div *ngIf="!isEditing; else editProfileForm" class="profile-summary">
+      <div class="avatar-shell">
+        <img [src]="profile.avatar" [alt]="profile.name + ' profile picture'" />
+      </div>
+
+      <div class="identity-block">
+        <span class="agent-label">{{ profile.rank }}</span>
+        <h2>{{ profile.name }}</h2>
+        <p>{{ profile.bio }}</p>
+      </div>
+    </div>
+
+    <ng-template #editProfileForm>
+      <div class="profile-summary edit-form-shell">
+        <div class="avatar-shell">
+          <img [src]="editForm.avatar || profile.avatar" [alt]="editForm.name + ' profile picture'" />
+        </div>
+
+        <div class="identity-block edit-form">
+          <label class="field-group">
+            <span class="field-label">Display name</span>
+            <input [(ngModel)]="editForm.name" type="text" placeholder="Your agent name" />
+          </label>
+
+          <label class="field-group">
+            <span class="field-label">Avatar URL</span>
+            <input [(ngModel)]="editForm.avatar" type="text" placeholder="https://..." />
+          </label>
+
+          <label class="field-group">
+            <span class="field-label">Bio</span>
+            <textarea [(ngModel)]="editForm.bio" rows="3" placeholder="Write your bio..."></textarea>
+          </label>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats">
+        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-value">{{ stat.value }}</span>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <button *ngIf="!isEditing" class="action-button primary" (click)="onEditProfile()">EDIT PROFILE</button>
+      <button *ngIf="isEditing" class="action-button primary" (click)="saveProfile()">SAVE CHANGES</button>
+      <button *ngIf="isEditing" class="action-button" (click)="cancelEdit()">CANCEL</button>
+      <button *ngIf="!isEditing" class="action-button" (click)="onBack()">MAIN MENU</button>
+    </div>
+  </div>
+</div>

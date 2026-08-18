@@ -23,18 +23,19 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE player_profiles (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id BIGINT NOT NULL UNIQUE,
-    display_name VARCHAR(100),
+CREATE TABLE player_profiles ( 
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
+    user_id BIGINT NOT NULL UNIQUE, 
+    display_name VARCHAR(100), 
     avatar VARCHAR(255),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_player_profile_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
+    bio VARCHAR(500),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+ 
+    CONSTRAINT fk_player_profile_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE 
 );
 
 
