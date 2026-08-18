@@ -21,17 +21,18 @@ export class TrapService {
   constructor() {}
 
   start(): void {
-    // initialize state and start cycling
+    this.stop();
+
     for (const pos of this.spikePositions) {
       const key = `${pos.x},${pos.y}`;
       this.spikeState.set(key, Math.floor(Math.random() * 3));
 
-      const initialDelay = Math.floor(Math.random() * 3000);
+      const initialDelay = Math.floor(Math.random() * 2000);
       const t = window.setTimeout(() => {
         const id = window.setInterval(() => {
           const cur = this.spikeState.get(key) ?? 0;
           this.spikeState.set(key, (cur + 1) % 3);
-        }, 1000);
+        }, 1400);
         this.spikeIntervals.push(id);
       }, initialDelay);
 

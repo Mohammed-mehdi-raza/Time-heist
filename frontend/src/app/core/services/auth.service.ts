@@ -8,6 +8,7 @@ import {
   LoginResponse,
   RegisterRequest
 } from '../models/auth.model';
+import { User } from '../../shared/models/user.model';
 import { environment } from '../../../environment/environment';
 
 @Injectable({
@@ -40,6 +41,12 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('access_token');
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.http
+      .get<ApiResponse<User>>(`${this.apiUrl}/me`)
+      .pipe(map(response => response.data));
   }
 
   isLoggedIn(): boolean {

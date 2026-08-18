@@ -72,7 +72,6 @@ export class GameService {
         ...currentState.player,
         hasDiamond: true
       },
-      score: currentState.score + 100,
       objective: 'Reach the exit',
       eventMessage: 'Diamond collected'
     });
@@ -94,7 +93,6 @@ export class GameService {
 
     this.updateState({
       status: 'won',
-      score: currentState.score + currentState.remainingTime * 10,
       eventMessage: 'You escaped successfully'
     });
   }
@@ -128,6 +126,19 @@ export class GameService {
         }
       }, 3000); 
     }
+
+  private calculateScore(
+    durationSeconds: number,
+    diamondStolen: boolean,
+    cctvCaught: number,
+    laserTriggered: number,
+    holesTriggered: number,
+    spikesHit: number,
+  ): number {
+    // Score is now calculated entirely on the backend.
+    // This method is kept for backward compatibility but should not be used.
+    return 0;
+  }
 
   pauseGame(): void {
     if (this.currentState?.status === 'running') {

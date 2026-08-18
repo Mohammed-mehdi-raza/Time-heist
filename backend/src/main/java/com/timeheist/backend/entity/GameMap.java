@@ -46,7 +46,7 @@ public class GameMap {
     private Integer escapeY;
 
     @Column(name = "is_active", nullable = false)
-    private Boolean active = true;
+    private boolean active = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -65,5 +65,8 @@ public class GameMap {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
+    
+    public boolean getActive() {
+    	return this.active;
+    }
 }

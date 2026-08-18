@@ -29,7 +29,9 @@
     <!-- Total Score Box -->
     <div class="total-score-box">
       <span class="total-label">TOTAL SCORE</span>
-      <span class="total-value">{{ stats.totalScore | number }}</span>
+      <span class="total-value" [ngClass]="{ 'loading': isScoreLoading() }">
+        {{ stats.totalScore | number }}
+      </span>
     </div>
 
     <!-- Action Buttons -->

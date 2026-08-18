@@ -149,10 +149,11 @@ import { CollisionService } from './collision.service';
 export class PlayerService {
   private pressedKeys = new Set<string>();
   private animationFrameId?: number;
-  
+  private isListening = false;
+
   // Add a cooldown so the player moves 1 tile at a time, not 60
   private lastMoveTime = 0;
-  private readonly moveDelay = 150; 
+  private readonly moveDelay = 150;
 
   constructor(
     private readonly gameService: GameService,
@@ -161,6 +162,11 @@ export class PlayerService {
   ) {}
 
   startListening(): void {
+    if (this.isListening) {
+      return;
+    }
+
+    this.isListening = true;
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
 
@@ -170,9 +176,14 @@ export class PlayerService {
   }
 
   stopListening(): void {
+    this.isListening = false;
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
-    if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = undefined;
+    }
   }
 
   private onKeyDown = (event: KeyboardEvent): void => {

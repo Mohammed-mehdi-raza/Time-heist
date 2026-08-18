@@ -1,17 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { MapComponent } from '../map/map.component';
 import { GameMap } from '../../models/map.model';
-import { HttpClient } from '@angular/common/http';
 import { GameService } from '../../services/game.service';
 import { PlayerService } from '../../services/player.service';
 import { HeistModalComponent, HeistStats } from '../heist-modal/heist-modal.component';
 import { GameTimerService } from '../../services/game-timer.service';
 import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
-import { Router } from '@angular/router';
 import { AudioService } from '../../services/audio.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { GameSessionApiService } from '../../services/game-session-api.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-game-screen',
@@ -24,12 +26,17 @@ export class GameScreenComponent implements OnInit, OnDestroy {
 
   gameMap?: GameMap;
   private destroy$ = new Subject<void>();
-  
+
   // Death Animation State
-  deathPhase: 0 | 1 | 2 | 3 = 0; 
+  deathPhase: 0 | 1 | 2 | 3 = 0;
   isFalling = false;
   private stateSub?: Subscription;
   private deathTimers: any[] = [];
+  private activeSessionId: number | null = null;
+  private sessionFinished = false;
+  private pendingFinishResult: 'won' | 'lost' | null = null;
+  private backendFinalScore: number | null = null;
+  private isScoreLoading = false;
 
   constructor(
     private readonly http: HttpClient,
@@ -38,6 +45,8 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     private readonly timerService: GameTimerService,
     private readonly router: Router,
     private readonly audioService: AudioService,
+    private readonly authService: AuthService,
+    private readonly gameSessionApiService: GameSessionApiService,
   ) {}
 
   // --- GETTERS ---
@@ -68,13 +77,22 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   get heistStats(): HeistStats {
     const state = this.gameService.currentState;
     const elapsedSeconds = state ? Math.max(0, state.remainingTime) : 0;
+    let displayScore: number | string = 0;
+
+    if (this.isGameWon) {
+      if (this.isScoreLoading) {
+        displayScore = 'Calculating score...';
+      } else if (this.backendFinalScore !== null) {
+        displayScore = this.backendFinalScore;
+      }
+    }
 
     return {
       timeTaken: this.formatTime(elapsedSeconds),
       cctvAlerts: 0,
       trapsHit: 0,
-      scoreEarned: state?.score ?? 0,
-      totalScore: state?.score ?? 0
+      scoreEarned: typeof displayScore === 'number' ? displayScore : 0,
+      totalScore: displayScore
     };
   }
 
@@ -93,17 +111,49 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   }
 
   restartGame(): void {
-    // Reset death animation if restarting from a death state
-    this.resetDeathAnimation(); 
+    this.resetDeathAnimation();
+    this.backendFinalScore = null;
+    this.isScoreLoading = false;
+    this.sessionFinished = false;
+    this.pendingFinishResult = null;
 
     if (!this.gameMap) {
       return;
     }
 
-    this.gameService.startGame(this.gameMap);
-    this.timerService.start();
-    this.playerService.startListening();
-    this.audioService.startMusic();
+    const startLocalGame = () => {
+      this.playerService.stopListening();
+      this.gameService.startGame(this.gameMap!);
+      this.timerService.start();
+      this.playerService.startListening();
+      this.audioService.startMusic();
+    };
+
+    const mapId = this.getMapId(this.gameMap);
+
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.gameSessionApiService.startGame(user.id, mapId).subscribe({
+          next: (response) => {
+            this.activeSessionId = response.data.id;
+
+            if (this.pendingFinishResult) {
+              this.finishSession(this.pendingFinishResult);
+            }
+
+            startLocalGame();
+          },
+          error: (error) => {
+            console.error('Failed to start game session:', error);
+            startLocalGame();
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Failed to load current user, falling back to local game:', error);
+        startLocalGame();
+      }
+    });
   }
 
   goToMainMenu(): void {
@@ -130,9 +180,15 @@ export class GameScreenComponent implements OnInit, OnDestroy {
         if (state?.status === 'won') {
           this.audioService.stopMusic();
           this.audioService.playWin();
+          this.finishSession('won');
+        } else if (state?.status === 'dying') {
+          this.audioService.stopMusic();
+          this.audioService.playGameOver();
+          this.finishSession('lost');
         } else if (state?.status === 'lost') {
           this.audioService.stopMusic();
           this.audioService.playGameOver();
+          this.finishSession('lost');
         }
       });
     // Listen for the 'dying' state to start the animation
@@ -164,6 +220,46 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.deathTimers = [];
     this.deathPhase = 0;
     this.isFalling = false;
+  }
+
+  private finishSession(result: 'won' | 'lost'): void {
+    if (this.sessionFinished) {
+      return;
+    }
+
+    if (this.activeSessionId === null) {
+      this.pendingFinishResult = result;
+      return;
+    }
+
+    this.sessionFinished = true;
+    this.pendingFinishResult = null;
+
+    this.gameSessionApiService.finishGame(this.activeSessionId).subscribe({
+      next: () => {
+        if (result === 'won') {
+          this.isScoreLoading = true;
+          this.gameSessionApiService.getGameScore(this.activeSessionId!).subscribe({
+            next: (response) => {
+              this.backendFinalScore = response.data.totalScore;
+              this.isScoreLoading = false;
+            },
+            error: (error) => {
+              console.error('Failed to load game score:', error);
+              this.isScoreLoading = false;
+            }
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Failed to finish game session:', error);
+      }
+    });
+  }
+
+  private getMapId(gameMap: GameMap): number {
+    const mapId = Number(String(gameMap.id).match(/\d+/)?.[0] ?? '1');
+    return Number.isFinite(mapId) ? mapId : 1;
   }
 
   ngOnDestroy(): void {

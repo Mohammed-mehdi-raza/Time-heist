@@ -49,7 +49,7 @@ public class GameObject {
     private Map<String, Object> configuration;
 
     @Column(name = "is_active", nullable = false)
-    private Boolean active = true;
+    private boolean active = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

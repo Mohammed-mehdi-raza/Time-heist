@@ -1,0 +1,37 @@
+{
+  "id": "test-level",
+  "tileSize": 48,
+  "width": 7,
+  "height": 5,
+  "tiles": [
+    ["wall", "wall", "wall", "wall", "floor", "wall", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall"]
+  ],
+  "playerStart": {
+    "x": 1,
+    "y": 3
+  },
+  "diamondPosition": {
+    "x": 2,
+    "y": 3
+  },
+  "exitPosition": {
+    "x": 4,
+    "y": 0
+  },
+  "guards": [
+    {
+      "id": "guard_1",
+      "start": { "x": 5, "y": 3 },
+      "patrolType": "horizontal",
+      "visionRange": 1.0,
+      "path": [
+        { "x": 5, "y": 3 },
+        { "x": 5, "y": 2 }
+      ]
+    }
+  ]
+}

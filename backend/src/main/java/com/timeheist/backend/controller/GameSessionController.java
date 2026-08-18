@@ -6,17 +6,16 @@ import com.timeheist.backend.dto.ApiResponse;
 import com.timeheist.backend.entity.GameSession;
 import com.timeheist.backend.service.GameSessionService;
 
-import lombok.RequiredArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/game/sessions")
-@RequiredArgsConstructor
 public class GameSessionController {
 
-    private final GameSessionService gameSessionService;
+	@Autowired
+    private GameSessionService gameSessionService;
 
 
     // START GAME
