@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
@@ -30,8 +30,14 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   // Death Animation State
   deathPhase: 0 | 1 | 2 | 3 = 0;
   isFalling = false;
-  private stateSub?: Subscription;
   private deathTimers: any[] = [];
+
+  // Win Animation State
+  winPhase: 1 | 2 | 3 = 1;
+  private winInterval: any;
+  private winTimeout: any;
+
+  private stateSub?: Subscription;
   private activeSessionId: number | null = null;
   private sessionFinished = false;
   private pendingFinishResult: 'won' | 'lost' | null = null;
@@ -47,6 +53,7 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     private readonly audioService: AudioService,
     private readonly authService: AuthService,
     private readonly gameSessionApiService: GameSessionApiService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   // --- GETTERS ---
@@ -70,8 +77,17 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   get isSoundMuted(): boolean {
     return this.audioService.isMuted();
   }
+
   get isDying(): boolean {
     return this.gameService.currentState?.status === 'dying';
+  }
+
+  get isWinning(): boolean {
+    return this.gameService.currentState?.status === 'winning';
+  }
+
+  get currentHealth(): number {
+    return this.gameService.currentState?.player.health ?? 0; 
   }
 
   get heistStats(): HeistStats {
@@ -97,6 +113,18 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   }
 
   // --- METHODS ---
+  // testWin(): void {
+  //   const state = this.gameService.currentState;
+  //   if (state && state.status === 'running') {
+  //     // 1. Force diamond collection so tryEscape() doesn't block it
+  //     this.gameService.updateState({
+  //       player: { ...state.player, hasDiamond: true }
+  //     });
+      
+  //     // 2. Trigger the actual win sequence
+  //     this.gameService.tryEscape();
+  //   }
+  // }
 
   formatTime(totalSeconds: number): string {
     const safeSeconds = Math.max(0, totalSeconds);
@@ -106,12 +134,9 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
-    get currentHealth(): number {
-    return this.gameService.currentState?.player.health ?? 0; // NEW: reads current player health
-  }
-
   restartGame(): void {
     this.resetDeathAnimation();
+    this.resetWinAnimation();
     this.backendFinalScore = null;
     this.isScoreLoading = false;
     this.sessionFinished = false;
@@ -173,29 +198,45 @@ export class GameScreenComponent implements OnInit, OnDestroy {
         this.restartGame();
       });
 
-    // Listen to game state changes to play appropriate sounds
+    // Listen to game state changes
     this.gameService.gameState$
       .pipe(takeUntil(this.destroy$))
       .subscribe((state) => {
-        if (state?.status === 'won') {
+        if (state?.status === 'winning') {
           this.audioService.stopMusic();
           this.audioService.playWin();
           this.finishSession('won');
+          
+          // FORCE UI UPDATE
+          this.startWinAnimation();
+          this.cdr.detectChanges(); 
+        } else if (state?.status === 'won') {
+          if (!this.sessionFinished) {
+             this.audioService.stopMusic();
+             this.audioService.playWin();
+             this.finishSession('won');
+          }
         } else if (state?.status === 'dying') {
           this.audioService.stopMusic();
           this.audioService.playGameOver();
           this.finishSession('lost');
+          this.startDeathAnimation();
+          this.cdr.detectChanges();
         } else if (state?.status === 'lost') {
-          this.audioService.stopMusic();
-          this.audioService.playGameOver();
-          this.finishSession('lost');
+          if (!this.sessionFinished) {
+             this.audioService.stopMusic();
+             this.audioService.playGameOver();
+             this.finishSession('lost');
+          }
         }
       });
-    // Listen for the 'dying' state to start the animation
+
+    // Clean up old stateSub logic, we handle it in the main subscription above now
     this.stateSub = this.gameService.gameState$.subscribe(state => {
-      if (state?.status === 'dying' && this.deathPhase === 0) {
-        this.startDeathAnimation();
-      }
+       if (state?.status === 'running') {
+         if (this.winInterval) this.resetWinAnimation();
+         if (this.deathPhase !== 0) this.resetDeathAnimation();
+       }
     });
   }
 
@@ -220,6 +261,30 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.deathTimers = [];
     this.deathPhase = 0;
     this.isFalling = false;
+  }
+
+  startWinAnimation(): void {
+    this.winPhase = 1;
+    let currentFrame = 1;
+    
+    // Cycle through 1, 2, 3 every 400ms
+    this.winInterval = setInterval(() => {
+      currentFrame = currentFrame >= 3 ? 1 : currentFrame + 1;
+      this.winPhase = currentFrame as 1 | 2 | 3;
+    }, 400); 
+
+    // Clear interval after 3.6 seconds (exactly 3 loops)
+    this.winTimeout = setTimeout(() => {
+      if (this.winInterval) clearInterval(this.winInterval);
+    }, 3600);
+  }
+
+  resetWinAnimation(): void {
+    if (this.winInterval) clearInterval(this.winInterval);
+    if (this.winTimeout) clearTimeout(this.winTimeout);
+    this.winInterval = null;
+    this.winTimeout = null;
+    this.winPhase = 1;
   }
 
   private finishSession(result: 'won' | 'lost'): void {
@@ -265,6 +330,7 @@ export class GameScreenComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.stateSub?.unsubscribe();
     this.resetDeathAnimation();
+    this.resetWinAnimation();
     this.playerService.stopListening();
     this.audioService.stopMusic();
     this.destroy$.next();
