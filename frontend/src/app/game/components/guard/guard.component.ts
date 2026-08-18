@@ -141,7 +141,7 @@ export class GuardComponent implements OnInit, OnDestroy {
 
       this.moveGuard();
       this.checkPlayerDetection();
-    }, 30);
+    }, 55);
   }
 
   private startAnimation(): void {
@@ -187,7 +187,7 @@ export class GuardComponent implements OnInit, OnDestroy {
     const nextPosition = this.guardService.moveTowards(
       oldPosition,
       target,
-      0.025
+      0.2
     );
 
     this.updateFacing(oldPosition, nextPosition);
@@ -318,6 +318,15 @@ export class GuardComponent implements OnInit, OnDestroy {
       visionRange: this.visionRadius,
       isAlerted: existingGuard?.isAlerted ?? false
     };
+
+    const samePosition = existingGuard &&
+      existingGuard.position.x === updatedGuard.position.x &&
+      existingGuard.position.y === updatedGuard.position.y &&
+      existingGuard.currentPatrolIndex === updatedGuard.currentPatrolIndex;
+
+    if (samePosition) {
+      return;
+    }
 
     if (existingGuard) {
       this.gameService.updateState({

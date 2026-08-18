@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiResponse } from '../../shared/models/api-response.model';
-import { GameSession } from '../models/game-session.model';
-import { environment } from '../../../environment/evironment';
+import { GameScoreResponse, GameSession } from '../models/game-session.model';
+import { environment } from '../../../environment/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -51,6 +51,17 @@ export class GameSessionApiService {
     return this.http.post<ApiResponse<GameSession>>(
       `${this.apiUrl}/${sessionId}/finish`,
       null,
+    );
+  }
+
+  /**
+   * Fetches the calculated score for a finished game session.
+   *
+   * GET /api/game/sessions/{sessionId}/events/score
+   */
+  getGameScore(sessionId: number): Observable<ApiResponse<GameScoreResponse>> {
+    return this.http.get<ApiResponse<GameScoreResponse>>(
+      `${this.apiUrl}/${sessionId}/events/score`,
     );
   }
 }

@@ -53,7 +53,7 @@ public class GameSession {
     private String status = "RUNNING";
 
     @Column(name = "diamond_stolen", nullable = false)
-    private Boolean diamondStolen = false;
+    private boolean diamondStolen = false;
 
     @Column(name = "final_score")
     private Integer finalScore;
@@ -136,11 +136,11 @@ public class GameSession {
 		this.status = status;
 	}
 
-	public Boolean getDiamondStolen() {
+	public boolean getDiamondStolen() {
 		return diamondStolen;
 	}
 
-	public void setDiamondStolen(Boolean diamondStolen) {
+	public void setDiamondStolen(boolean diamondStolen) {
 		this.diamondStolen = diamondStolen;
 	}
 

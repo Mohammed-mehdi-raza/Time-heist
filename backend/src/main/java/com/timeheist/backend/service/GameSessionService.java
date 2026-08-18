@@ -1,28 +1,42 @@
 package com.timeheist.backend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import com.timeheist.backend.entity.GameSession;
 import com.timeheist.backend.entity.GameMap;
+import com.timeheist.backend.entity.User;
 import com.timeheist.backend.repository.GameMapRepository;
 import com.timeheist.backend.repository.GameSessionRepository;
+import com.timeheist.backend.repository.UserRepository;
 import com.timeheist.backend.exception.ResourceNotFoundException;
+import com.timeheist.backend.dto.GameScoreResponse;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 
 @Service
-@RequiredArgsConstructor
 public class GameSessionService {
 
-    private final GameSessionRepository gameSessionRepository;
-    private final GameMapRepository gameMapRepository;
+	@Autowired
+    private GameSessionRepository gameSessionRepository;
+	@Autowired
+    private GameMapRepository gameMapRepository;
+	@Autowired
+    private UserRepository userRepository;
+	@Autowired
+    private GameEventService gameEventService;
 
     @Transactional
     public GameSession startGame(Long userId, Long mapId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User with ID " + userId + " does not exist."
+                        )
+                );
 
         GameMap gameMap = gameMapRepository.findById(mapId)
                 .orElseThrow(() ->
@@ -31,23 +45,15 @@ public class GameSessionService {
                         )
                 );
 
-        if (!Boolean.TRUE.equals(gameMap.getActive())) {
+        if (!gameMap.getActive()) {
             throw new IllegalArgumentException(
                     "Game map with ID " + mapId + " is not active."
             );
         }
 
-        /*
-         * TODO:
-         * Replace this with fetching the authenticated user
-         * from Spring Security.
-         *
-         * For now this method expects userId.
-         */
-
         GameSession session = new GameSession();
 
-        // session.setUser(user);
+        session.setUser(user);
         session.setMap(gameMap);
         session.setStartedAt(LocalDateTime.now());
         session.setStatus("RUNNING");
@@ -85,8 +91,12 @@ public class GameSessionService {
             );
         }
 
-        session.setEndedAt(LocalDateTime.now());
+        LocalDateTime endedAt = LocalDateTime.now();
+        session.setEndedAt(endedAt);
         session.setStatus("COMPLETED");
+
+        GameScoreResponse score = gameEventService.calculateScore(sessionId);
+        session.setFinalScore(score.getTotalScore());
 
         return gameSessionRepository.save(session);
     }

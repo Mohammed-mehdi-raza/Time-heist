@@ -22,6 +22,18 @@ export interface GameSession {
   gameEvents: GameEvent[];
 }
 
+export interface GameScoreResponse {
+  totalScore: number;
+  durationSeconds: number;
+  cctvCaught: number;
+  laserTriggered: number;
+  holesTriggered: number;
+  spikesHit: number;
+  diamondStolen: number;
+  startTime?: string;
+  endTime?: string;
+}
+
 export type GameSessionStatus =
   | 'RUNNING'
   | 'COMPLETED'

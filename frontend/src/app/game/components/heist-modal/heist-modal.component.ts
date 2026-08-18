@@ -7,7 +7,7 @@ export interface HeistStats {
   cctvAlerts: number;
   trapsHit: number;
   scoreEarned: number;
-  totalScore: number;
+  totalScore: number | string;
 }
 
 @Component({
@@ -29,6 +29,10 @@ export class HeistModalComponent {
   constructor(private readonly router: Router) {}
 
   @Output() nextLevel = new EventEmitter<void>();
+
+  isScoreLoading(): boolean {
+    return typeof this.stats.totalScore === 'string';
+  }
 
   onNextLevel(): void {
     this.nextLevel.emit();
