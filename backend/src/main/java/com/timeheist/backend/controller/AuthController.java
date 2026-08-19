@@ -37,7 +37,7 @@ public class AuthController {
         authService.register(request);
         
         ApiResponse<Void> response = ApiResponse.<Void>builder()
-                .success(false)
+                .success(true)
                 .message("user registered succesfully")
                 .data(null)
                 .build();
@@ -54,7 +54,7 @@ public class AuthController {
         String token = authService.login(request);
         
         ApiResponse<AuthResponse> response = ApiResponse.<AuthResponse>builder()
-                .success(false)
+                .success(true)
                 .message("user login succesfully")
                 .data(new AuthResponse(token))
                 .build();
@@ -69,8 +69,7 @@ public class AuthController {
     	String username = authentication.getName();
     	UserDto user = userService.getUserDetailsByName(username);
     	ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
-                .success(false)
-                .message("user details fetched succesfully")
+                .success(true)
                 .data(user)
                 .build();
 
