@@ -135,7 +135,7 @@ public class ProfileService {
 
         int gamesPlayed = sessions.size();
         int gamesWon = (int) sessions.stream()
-                .filter(session -> Boolean.TRUE.equals(session.getDiamondStolen()))
+                .filter(session -> session.getDiamondStolen())
                 .count();
 
         String bestTime = sessions.stream()
