@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { GameService } from '../../services/game.service';
 
 export interface HeistStats {
   timeTaken: string;
@@ -26,7 +27,7 @@ export class HeistModalComponent {
     totalScore: 1320
   };
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router,private gameService: GameService) {}
 
   @Output() nextLevel = new EventEmitter<void>();
 
@@ -39,6 +40,7 @@ export class HeistModalComponent {
   }
 
   onMainMenu(): void {
+    this.gameService.resetGame();
     this.router.navigate(['']);
   }
 }

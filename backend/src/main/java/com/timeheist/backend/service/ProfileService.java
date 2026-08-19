@@ -97,7 +97,7 @@ public class ProfileService {
     }
 
     public PlayerProfile createPlayer(PlayerProfile player) {
-        if (player == null || player.getUser() == null || player.getUser().getId() == null) {
+        if (player == null || player.getUser().getId() == null) {
             throw new IllegalArgumentException("Player profile requires a valid user.");
         }
 
@@ -135,7 +135,7 @@ public class ProfileService {
 
         int gamesPlayed = sessions.size();
         int gamesWon = (int) sessions.stream()
-                .filter(session -> session.getDiamondStolen())
+                .filter(session -> session.getFinalScore()!=null)
                 .count();
 
         String bestTime = sessions.stream()
