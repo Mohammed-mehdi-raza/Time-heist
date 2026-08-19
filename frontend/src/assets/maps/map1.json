@@ -1,0 +1,91 @@
+{
+  "id": "level-1",
+  "tileSize": 48,
+  "width": 24,
+  "height": 14,
+  "tiles": [
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "wall", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall"],
+    ["wall", "wall", "wall", "floor", "wall", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "wall", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "wall", "wall", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall", "wall", "wall", "floor", "wall", "floor", "floor", "floor", "wall", "floor", "wall", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "floor", "floor", "wall", "floor", "floor", "floor", "floor", "floor", "wall"],
+    ["wall", "floor", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
+  ],
+  "playerStart": {
+    "x": 1,
+    "y": 13
+  },
+  "exitPosition": {
+    "x": 22,
+    "y": 0
+  },
+  "diamondPosition": {
+    "x": 10,
+    "y": 5
+  },
+  "guards": [
+    {
+      "id": "guard_1",
+      "start": { "x": 3, "y": 1 },
+      "patrolType": "custom",
+      "visionRange": 2.0,
+      "path": [
+        { "x": 3, "y": 1 },
+        { "x": 3, "y": 2 },
+        { "x": 3, "y": 3 },
+        { "x": 3, "y": 4 },
+        { "x": 3, "y": 5 },
+        { "x": 3, "y": 6 },
+        { "x": 3, "y": 7 },
+        { "x": 3, "y": 8 }
+      ]
+    },
+    {
+      "id": "guard_2",
+      "start": { "x": 1, "y": 7 },
+      "patrolType": "horizontal",
+      "visionRange": 2.5,
+      "path": [
+        { "x": 1, "y": 7 },
+        { "x": 2, "y": 7 },
+        { "x": 3, "y": 7 },
+        { "x": 4, "y": 7 },
+        { "x": 5, "y": 7 },
+        { "x": 6, "y": 7 },
+        { "x": 7, "y": 7 },
+        { "x": 8, "y": 7 },
+        { "x": 9, "y": 7 },
+        { "x": 10, "y": 7 },
+        { "x": 11, "y": 7 },
+        { "x": 12, "y": 7 }
+      ]
+    },
+    {
+      "id": "guard_3",
+      "start": { "x": 12, "y": 1 },
+      "patrolType": "custom",
+      "visionRange": 2.2,
+      "path": [
+        { "x": 12, "y": 1 },
+        { "x": 13, "y": 1 },
+        { "x": 14, "y": 1 },
+        { "x": 15, "y": 1 },
+        { "x": 16, "y": 1 },
+        { "x": 17, "y": 1 },
+        { "x": 18, "y": 1 },
+        { "x": 19, "y": 1 },
+        { "x": 20, "y": 1 },
+        { "x": 21, "y": 1 },
+        { "x": 22, "y": 1 }
+      ]
+    }
+  ]
+}

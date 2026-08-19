@@ -1,0 +1,43 @@
+<div class="modal-backdrop">
+  <div class="modal-container">
+    <h2 class="title">HEIST COMPLETE!</h2>
+
+    <div class="stats-grid">
+      <!-- Left Column: Graphic -->
+      <div class="graphic-container">
+        <div class="sparkles"></div>
+        <img src="../../../../assets/images/diamond.png" alt="Diamond" class="diamond-img" />
+      </div>
+
+      <!-- Right Column: Stats List -->
+      <div class="stats-list">
+        <div class="stat-row">
+          <span class="stat-label">Time Taken</span>
+          <span class="stat-value">{{ stats.timeTaken }}</span>
+        </div>
+        <!-- <div class="stat-row">
+          <span class="stat-label">CCTV Alerts</span>
+          <span class="stat-value">{{ stats.cctvAlerts }}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Traps Hit</span>
+          <span class="stat-value">{{ stats.trapsHit }}</span>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- Total Score Box -->
+    <div class="total-score-box">
+      <span class="total-label">TOTAL SCORE</span>
+      <span class="total-value" [ngClass]="{ 'loading': isScoreLoading() }">
+        {{ stats.totalScore | number }}
+      </span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="button-group">
+      <button class="btn btn-primary" (click)="onNextLevel()" disabled>NEXT LEVEL</button>
+      <button class="btn btn-secondary" (click)="onMainMenu()">MAIN MENU</button>
+    </div>
+  </div>
+</div>

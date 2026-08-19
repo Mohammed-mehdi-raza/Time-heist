@@ -1,0 +1,72 @@
+<div class="loginContainer">
+    <div class="auth-content">
+      <div class="auth-card">
+        <h2>Login</h2>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+          <div class="form-group">
+            <label for="username">username</label>
+
+            <input
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="Enter your username"
+              autocomplete="username"
+              [class.invalid]="username.invalid && username.touched"
+            />
+
+            @if (username.invalid && username.touched) {
+              <div class="field-error">
+                @if (username.hasError("required")) {
+                  <span>Username is required.</span>
+                }
+
+                @if (username.hasError("minlength")) {
+                  <span>Username must contain at least 3 characters.</span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.invalid]="password.invalid && password.touched"
+            />
+
+            @if (password.invalid && password.touched) {
+              <div class="field-error">
+                @if (password.hasError("required")) {
+                  <span>Password is required.</span>
+                }
+
+                @if (password.hasError("minlength")) {
+                  <span>Password must contain at least 6 characters.</span>
+                }
+              </div>
+            }
+          </div>
+
+          <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
+            @if (isSubmitting) {
+              Logging in...
+            } @else {
+              Login
+            }
+          </button>
+        </form>
+
+        <p class="bottom-text">
+          Do not have an account?
+          <a href="javascript:void(0)" (click)="switchToRegister()">Register</a>
+        </p>
+      </div>
+    </div>
+</div>

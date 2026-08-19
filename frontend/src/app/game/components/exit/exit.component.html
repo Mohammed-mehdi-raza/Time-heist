@@ -1,0 +1,16 @@
+<ng-container *ngIf="gameMap">
+  <div
+    class="exit"
+    [class.unlocked]="hasDiamond"
+    [style.left.%]="((gameMap.exitPosition.x + 0.5) / gameMap.width) * 100"
+    [style.top.%]="((gameMap.exitPosition.y + 0.5) / gameMap.height) * 100"
+    [style.width.%]="(1.15 / gameMap.width) * 100"
+    [style.height.%]="(1.15 / gameMap.height) * 100"
+  >
+    <img
+      class="exit-image"
+      [src]="hasDiamond ? '/assets/images/escapeDoorOpen.png' : '/assets/images/escapeDoor.png'"
+      alt="Exit door"
+    />
+  </div>
+</ng-container>

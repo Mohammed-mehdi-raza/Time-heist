@@ -1,0 +1,496 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.about-page {
+  min-height: 100vh;
+  height: 100vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 28px 30px 45px;
+  box-sizing: border-box;
+
+  color: #dce7ef;
+  font-family: Arial, sans-serif;
+
+  background:
+    linear-gradient(
+      rgba(3, 10, 20, 0.25),
+      rgba(3, 10, 20, 0.35)
+    ),
+    url('/assets/images/background.png');
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+    scrollbar-width: thin;
+  scrollbar-color: rgba(39, 170, 200, 0.45) transparent;
+}
+.about-page::-webkit-scrollbar {
+  width: 4px;
+}
+
+.about-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.about-page::-webkit-scrollbar-thumb {
+  background: rgba(40, 177, 207, 0.45);
+
+  border-radius: 10px;
+
+  transition: background 0.2s ease;
+}
+
+.about-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(55, 213, 240, 0.9);
+
+  box-shadow:
+    0 0 8px rgba(55, 213, 240, 0.55);
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.diamond-icon {
+  width: 48px;
+  height: 48px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 0 8px rgba(80, 220, 255, 0.8));
+}
+
+.game-title {
+  margin-top: 4px;
+
+  font-size: 29px;
+
+  font-weight: 300;
+
+  letter-spacing: 4px;
+}
+
+.game-title span {
+  color: #e43a43;
+  font-weight: 700;
+}
+
+
+/* ===============================
+   MAIN PANEL
+================================ */
+
+.about-container {
+  width: min(1300px, 100%);
+
+  margin: 20px auto 0;
+
+  padding: 28px 34px 30px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #195575;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 21, 37, 0.94),
+      rgba(6, 15, 28, 0.96)
+    );
+
+  box-shadow:
+    0 0 28px rgba(0, 70, 110, 0.15);
+}
+
+.about-container > h1 {
+  margin: 0 0 28px;
+
+  text-align: center;
+
+  font-size: 44px;
+
+  font-weight: 300;
+
+  letter-spacing: 3px;
+}
+
+
+/* ===============================
+   GRID
+================================ */
+
+.about-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+
+/* ===============================
+   CARDS
+================================ */
+
+.about-card {
+  padding: 23px;
+
+  border: 1px solid #263b50;
+
+  border-radius: 7px;
+
+  background:
+    rgba(7, 15, 28, 0.85);
+
+  box-sizing: border-box;
+}
+
+.about-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.about-card h2 {
+  margin: 0 0 22px;
+
+  text-align: center;
+
+  color: #b8c8d7;
+
+  font-size: 14px;
+
+  letter-spacing: 1.3px;
+}
+
+
+/* ===============================
+   GAME
+================================ */
+
+.card-body {
+  text-align: center;
+}
+
+.diamond-symbol {
+  margin-bottom: 13px;
+
+  color: #60defb;
+
+  font-size: 38px;
+
+  text-shadow:
+    0 0 9px rgba(0, 210, 250, 0.85),
+    0 0 18px rgba(0, 180, 230, 0.4);
+}
+
+.card-body p {
+  max-width: 520px;
+
+  margin: 0 auto 12px;
+
+  color: #9aaebe;
+
+  font-size: 12px;
+
+  line-height: 1.65;
+}
+
+
+/* ===============================
+   EXPERIENCE
+================================ */
+
+.experience-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.experience-item {
+  display: grid;
+
+  grid-template-columns: 38px 1fr;
+
+  gap: 12px;
+}
+
+.experience-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #264d64;
+
+  border-radius: 5px;
+
+  background: #0a1827;
+
+  color: #55daf5;
+
+  font-size: 15px;
+}
+
+.diamond-color {
+  color: #5fe6ff;
+}
+
+.experience-item h3 {
+  margin: 0 0 5px;
+
+  color: #dce6ed;
+
+  font-size: 12px;
+
+  letter-spacing: 1px;
+}
+
+.experience-item p {
+  margin: 0;
+
+  color: #748999;
+
+  font-size: 10px;
+
+  line-height: 1.55;
+}
+
+
+/* ===============================
+   JOURNEY
+================================ */
+
+.journey {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr auto 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.journey-step {
+  min-height: 105px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.number {
+  margin-bottom: 9px;
+
+  color: #2abedb;
+
+  font-size: 10px;
+}
+
+.title {
+  color: #e1ebef;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.3px;
+}
+
+.description {
+  margin-top: 7px;
+
+  color: #728898;
+
+  font-size: 10px;
+}
+
+.heist-step .title {
+  color: #e44044;
+}
+
+.arrow {
+  color: #33748c;
+
+  font-size: 20px;
+}
+
+
+/* ===============================
+   TEAM
+================================ */
+
+.team-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+.team-member {
+  padding: 18px;
+
+  text-align: center;
+
+  border: 1px solid #203b50;
+
+  border-radius: 6px;
+
+  background: rgba(3, 10, 19, 0.6);
+}
+
+.member-icon {
+  width: 48px;
+  height: 48px;
+
+  margin: 0 auto 12px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #285872;
+
+  border-radius: 50%;
+
+  color: #4dd9f5;
+
+  background: #0b1b2a;
+
+  font-size: 19px;
+}
+
+.team-member h3 {
+  margin: 0;
+
+  font-size: 12px;
+
+  letter-spacing: 1.2px;
+}
+
+.team-member p {
+  margin: 7px 0 0;
+
+  color: #718897;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* ===============================
+   BACK BUTTON
+================================ */
+
+.back-button {
+  display: block;
+
+  min-width: 245px;
+
+  margin: 27px auto 0;
+
+  padding: 12px 20px;
+
+  border: 1px solid #17648a;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 30, 47, 0.95),
+      rgba(5, 19, 33, 0.95)
+    );
+
+  color: #90c8db;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  color: #e3f8fd;
+
+  border-color: #28c6e8;
+
+  box-shadow:
+    0 0 14px rgba(20, 190, 230, 0.16);
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 850px) {
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card.full-width {
+    grid-column: auto;
+  }
+
+  .journey {
+    grid-template-columns: 1fr;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .about-page {
+    padding: 18px 12px 30px;
+  }
+
+  .about-container {
+    padding: 22px 14px;
+  }
+
+  .about-container > h1 {
+    font-size: 32px;
+  }
+
+  .game-title {
+    font-size: 24px;
+  }
+}

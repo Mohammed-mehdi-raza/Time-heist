@@ -1,0 +1,11 @@
+<ng-container *ngIf="!isTaken">
+  <div
+    class="diamond"
+    [style.left.%]="((gameMap.diamondPosition.x + 0.5) / gameMap.width) * 100"
+    [style.top.%]="((gameMap.diamondPosition.y + 0.5) / gameMap.height) * 100"
+    [style.width.%]="(1 / gameMap.width) * 100"
+    [style.height.%]="(1 / gameMap.height) * 100"
+  >
+    <img src="assets/images/diamond.png" alt="Diamond" />
+  </div>
+</ng-container>

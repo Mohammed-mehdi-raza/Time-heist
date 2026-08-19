@@ -1,0 +1,26 @@
+@if (gameMap && position) {
+  <div
+    class="guard"
+    [style.left.%]="((position.x + 0.5) / gameMap.width) * 100"
+    [style.top.%]="((position.y + 0.5) / gameMap.height) * 100"
+    [style.width.%]="(guardScale / gameMap.width) * 100"
+    [style.height.%]="(guardScale / gameMap.height) * 100"
+  >
+    <!-- VISION CONE -->
+    <div
+      class="guard-range"
+      [ngClass]="'guard-range--' + facingDirection"
+      [style.width.%]="visionConeLengthPercent"
+      [style.height.%]="visionConeHeightPercent"
+    ></div>
+
+    <!-- GUARD SPRITE -->
+    <img
+      class="guard-sprite"
+      [class.guard-sprite--left]="facingDirection === 'left'"
+      [src]="currentImage"
+      alt="Guard"
+      draggable="false"
+    />
+  </div>
+}

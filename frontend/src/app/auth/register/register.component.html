@@ -1,0 +1,111 @@
+<div class="register-container">
+  <div class="auth-content">
+    <div class="auth-card">
+      <h2>Register</h2>
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="register()"
+        novalidate
+      >
+        <div class="form-group">
+          <label for="username">Username</label>
+
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            [class.invalid]="username.invalid && username.touched"
+          />
+
+          @if (username.invalid && username.touched) {
+            <div class="field-error">
+              @if (username.hasError('required')) {
+                <span>Username is required.</span>
+              }
+
+              @if (username.hasError('minlength')) {
+                <span>Username must contain at least 3 characters.</span>
+              }
+
+              @if (username.hasError('maxlength')) {
+                <span>Username cannot exceed 50 characters.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            [class.invalid]="email.invalid && email.touched"
+          />
+
+          @if (email.invalid && email.touched) {
+            <div class="field-error">
+              @if (email.hasError('required')) {
+                <span>Email is required.</span>
+              }
+
+              @if (email.hasError('email')) {
+                <span>Enter a valid email address.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            [class.invalid]="password.invalid && password.touched"
+          />
+
+          @if (password.invalid && password.touched) {
+            <div class="field-error">
+              @if (password.hasError('required')) {
+                <span>Password is required.</span>
+              }
+
+              @if (password.hasError('minlength')) {
+                <span>Password must contain at least 6 characters.</span>
+              }
+
+              @if (password.hasError('maxlength')) {
+                <span>Password cannot exceed 50 characters.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid || isSubmitting"
+        >
+          @if (isSubmitting) {
+            Creating account...
+          } @else {
+            Register
+          }
+        </button>
+      </form>
+
+      <p class="bottom-text">
+        Already have an account?
+        <a href="javascript:void(0)" (click)="switchToLogin()">Login</a>
+      </p>
+    </div>
+  </div>
+</div>

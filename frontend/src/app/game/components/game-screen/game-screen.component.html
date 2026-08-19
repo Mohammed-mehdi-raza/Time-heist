@@ -1,0 +1,57 @@
+<div class="gameScreenContainer">
+    @if (gameMap) {
+        <div class="gameHud">
+            <button class="menuButton" type="button" (click)="goToMainMenu()">MAIN MENU</button>
+            <!-- <button class="testWinButton" type="button" (click)="testWin()">TEST WIN</button> -->
+            <div class="timerBadge">TIME: {{ formatTime(currentTime) }}</div>
+            <button class="soundToggleButton" (click)="toggleSound()" [class.muted]="isSoundMuted">
+                {{ isSoundMuted ? '🔇' : '🔊' }}
+            </button>
+        </div>
+        <app-map [gameMap]="gameMap"></app-map>
+
+        @if (gameMessage && !isGameLost && !isWinning) {
+            <div class="gameMessageBar">{{ gameMessage }}</div>
+        }
+    }
+
+    <!-- DEATH ANIMATION OVERLAY -->
+    @if (isDying) {
+      <div class="death-overlay">
+        <div class="death-popup">
+          <h2 class="death-text">ELIMINATED</h2>
+          <div class="death-sprite-container">
+            @if (deathPhase === 1) {
+              <img src="assets/Newchar/die/die1.png" class="death-sprite" [class.rotating]="isFalling" />
+            }
+            @if (deathPhase === 2) {
+              <img src="assets/Newchar/die/die2.png" class="death-sprite" />
+            }
+            @if (deathPhase === 3) {
+              <img src="assets/Newchar/die/die3.png" class="death-sprite" />
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- WIN ANIMATION OVERLAY -->
+    @if (isWinning) {
+      <div class="win-overlay">
+        <div class="win-popup">
+          <h2 class="win-text">MISSION COMPLETE</h2>
+          <div class="win-sprite-container">
+            <img [src]="'assets/Newchar/win/win' + winPhase + '.png'" class="win-sprite" />
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (isGameWon) {
+        <app-heist-modal [stats]="heistStats"></app-heist-modal>
+    }
+
+    @if (isGameLost) {
+        <app-game-over-modal [reason]="gameMessage" (restart)="restartGame()" (mainMenu)="goToMainMenu()"></app-game-over-modal>
+    }
+</div>
