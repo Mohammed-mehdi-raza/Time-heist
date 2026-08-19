@@ -333,6 +333,7 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.resetWinAnimation();
     this.playerService.stopListening();
     this.audioService.stopMusic();
+    this.activeSessionId = null;
     this.destroy$.next();
     this.destroy$.complete();
   }

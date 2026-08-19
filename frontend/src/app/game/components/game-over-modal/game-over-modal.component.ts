@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameService } from '../../services/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-over-modal',
@@ -8,15 +10,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './game-over-modal.component.scss'
 })
 export class GameOverModalComponent {
+
+  constructor(private router:Router,private gameService:GameService){
+  }
+
   @Input() reason: string = 'CAUGHT BY GUARD!';
   @Output() restart = new EventEmitter<void>();
-  @Output() mainMenu = new EventEmitter<void>();
 
   onRestart() {
+    this.gameService.resetGame();
     this.restart.emit();
   }
 
   onMainMenu() {
-    this.mainMenu.emit();
+    this.gameService.resetGame();
+    this.router.navigate(['']);
   }
 }

@@ -1,5 +1,6 @@
 package com.timeheist.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,9 @@ public class PlayerProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ✅ FIX 1: Changed type from Long to User entity (resolves AnnotationException)
+    // ✅ FIX 2: Named field 'user' to match mappedBy in User.java
+    // ✅ FIX 3: Added @JsonIgnoreProperties to stop infinite JSON recursion
     @OneToOne
     @JoinColumn(
         name = "user_id",
@@ -27,6 +31,7 @@ public class PlayerProfile {
         unique = true,
         foreignKey = @ForeignKey(name = "fk_player_profile_user")
     )
+    @JsonIgnoreProperties("playerProfile")
     private User user;
 
     @Column(name = "display_name", length = 100)
