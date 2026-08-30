@@ -47,10 +47,16 @@ export class GameSessionApiService {
    *
    * POST /api/game/sessions/{sessionId}/finish
    */
-  finishGame(sessionId: number): Observable<ApiResponse<GameSession>> {
+  finishGame(
+    sessionId: number,
+    result: 'won' | 'lost',
+  ): Observable<ApiResponse<GameSession>> {
+    const params = new HttpParams().set('result', result);
+
     return this.http.post<ApiResponse<GameSession>>(
       `${this.apiUrl}/${sessionId}/finish`,
       null,
+      { params },
     );
   }
 

@@ -1,20 +1,19 @@
 package com.timeheist.backend.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import com.timeheist.backend.entity.GameSession;
+import com.timeheist.backend.dto.GameScoreResponse;
 import com.timeheist.backend.entity.GameMap;
+import com.timeheist.backend.entity.GameSession;
 import com.timeheist.backend.entity.User;
+import com.timeheist.backend.exception.ResourceNotFoundException;
 import com.timeheist.backend.repository.GameMapRepository;
 import com.timeheist.backend.repository.GameSessionRepository;
 import com.timeheist.backend.repository.UserRepository;
-import com.timeheist.backend.exception.ResourceNotFoundException;
-import com.timeheist.backend.dto.GameScoreResponse;
-
-import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 public class GameSessionService {
@@ -75,7 +74,7 @@ public class GameSessionService {
     }
 
     @Transactional
-    public GameSession finishGame(Long sessionId) {
+        public GameSession finishGame(Long sessionId, String result) {
 
         GameSession session = gameSessionRepository.findById(sessionId)
                 .orElseThrow(() ->
@@ -91,12 +90,18 @@ public class GameSessionService {
             );
         }
 
+                if (!"won".equalsIgnoreCase(result) && !"lost".equalsIgnoreCase(result)) {
+                        throw new IllegalArgumentException("Game result must be 'won' or 'lost'.");
+                }
+
         LocalDateTime endedAt = LocalDateTime.now();
         session.setEndedAt(endedAt);
         session.setStatus("COMPLETED");
 
-        GameScoreResponse score = gameEventService.calculateScore(sessionId);
-        session.setFinalScore(score.getTotalScore());
+                if ("won".equalsIgnoreCase(result)) {
+                        GameScoreResponse score = gameEventService.calculateScore(sessionId);
+                        session.setFinalScore(score.getTotalScore());
+                }
 
         return gameSessionRepository.save(session);
     }

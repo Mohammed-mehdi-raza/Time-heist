@@ -73,16 +73,19 @@ public class ProfileService {
         PlayerProfile profile = profileRepo.findByUserId(userId)
                 .orElseGet(() -> createPlayerForUser(userId, displayName, avatar, bio));
 
-        String resolvedUsername = username != null && !username.isBlank() ? username : displayName;
-        String resolvedDisplayName = displayName != null && !displayName.isBlank() ? displayName : user.getUsername();
-
-        if (resolvedUsername != null && !resolvedUsername.isBlank()) {
-            user.setUsername(resolvedUsername);
-            userRepository.save(user);
+        if (username != null && !username.isBlank()) {
+            String trimmedUsername = username.trim();
+            if (!trimmedUsername.equals(user.getUsername())) {
+                if (userRepository.existsByUsername(trimmedUsername)) {
+                    throw new IllegalArgumentException("Username already exists");
+                }
+                user.setUsername(trimmedUsername);
+                userRepository.save(user);
+            }
         }
 
-        if (resolvedDisplayName != null && !resolvedDisplayName.isBlank()) {
-            profile.setDisplayName(resolvedDisplayName);
+        if (displayName != null && !displayName.isBlank()) {
+            profile.setDisplayName(displayName.trim());
         }
 
         if (avatar != null && !avatar.isBlank()) {
