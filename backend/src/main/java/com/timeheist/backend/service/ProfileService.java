@@ -142,7 +142,8 @@ public class ProfileService {
                 .count();
 
         String bestTime = sessions.stream()
-                .filter(session -> session.getEndedAt() != null && session.getStartedAt() != null)
+                .filter(session -> session.getFinalScore() != null)
+                .filter(session -> session.getStartedAt() != null && session.getEndedAt() != null)
                 .map(session -> Duration.between(session.getStartedAt(), session.getEndedAt()).getSeconds())
                 .filter(seconds -> seconds > 0)
                 .min(Long::compareTo)
