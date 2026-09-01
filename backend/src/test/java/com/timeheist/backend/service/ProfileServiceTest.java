@@ -1,19 +1,20 @@
 package com.timeheist.backend.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.timeheist.backend.dto.ProfileStatsResponse;
 import com.timeheist.backend.entity.GameSession;
+import com.timeheist.backend.entity.PlayerProfile;
 import com.timeheist.backend.entity.User;
 import com.timeheist.backend.repository.GameSessionRepository;
 import com.timeheist.backend.repository.ProfileRepo;
@@ -39,6 +40,37 @@ class ProfileServiceTest {
     }
 
     @Test
+    void shouldKeepUsernameSeparateFromDisplayNameWhenUpdatingProfile() {
+        User user = new User();
+        user.setId(7L);
+        user.setUsername("agent_007");
+
+        PlayerProfile profile = new PlayerProfile();
+        profile.setId(101L);
+        profile.setUser(user);
+        profile.setDisplayName("Old Display");
+        profile.setAvatar("/old.png");
+        profile.setBio("Old bio");
+
+        when(userRepository.findById(7L)).thenReturn(Optional.of(user));
+        when(profileRepo.findByUserId(7L)).thenReturn(Optional.of(profile));
+        when(profileRepo.save(profile)).thenReturn(profile);
+
+        PlayerProfile updated = profileService.updatePlayerForUser(
+                7L,
+                null,
+                "New Display",
+                "/new.png",
+                "Updated bio"
+        );
+
+        assertEquals("agent_007", user.getUsername());
+        assertEquals("New Display", updated.getDisplayName());
+        assertEquals("/new.png", updated.getAvatar());
+        assertEquals("Updated bio", updated.getBio());
+    }
+
+    @Test
     void shouldCalculateUserStatsFromGameSessions() {
         User user = new User();
         user.setId(7L);
@@ -57,7 +89,7 @@ class ProfileServiceTest {
         session2.setDiamondStolen(false);
         session2.setStartedAt(LocalDateTime.of(2026, 1, 2, 11, 0));
         session2.setEndedAt(LocalDateTime.of(2026, 1, 2, 11, 7));
-        session2.setFinalScore(2500);
+        session2.setFinalScore(null);
 
         GameSession session3 = new GameSession();
         session3.setUser(user);

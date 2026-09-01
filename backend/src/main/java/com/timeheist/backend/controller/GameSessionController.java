@@ -2,13 +2,18 @@ package com.timeheist.backend.controller;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.timeheist.backend.dto.ApiResponse;
 import com.timeheist.backend.entity.GameSession;
 import com.timeheist.backend.service.GameSessionService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/game/sessions")
@@ -58,10 +63,11 @@ public class GameSessionController {
     // FINISH GAME
     @PostMapping("/{sessionId}/finish")
     public ResponseEntity<ApiResponse<GameSession>> finishGame(
-            @PathVariable Long sessionId) {
+                        @PathVariable Long sessionId,
+                        @RequestParam String result) {
 
         GameSession session =
-                gameSessionService.finishGame(sessionId);
+                                gameSessionService.finishGame(sessionId, result);
 
         return ResponseEntity.ok(
                 ApiResponse.<GameSession>builder()

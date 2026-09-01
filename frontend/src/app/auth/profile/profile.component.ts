@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   private readonly profileService = inject(ProfileService);
 
   userId: number | null = null;
+  currentUsername = '';
   isEditing = false;
 
   profile = {
@@ -49,6 +50,7 @@ export class ProfileComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: user => {
         this.userId = user.id;
+        this.currentUsername = user.username || '';
         this.profile.name = user.username || this.profile.name || 'Agent';
         this.refreshProfileAndStats(user.id);
       },
@@ -141,13 +143,23 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    const payload = {
+    const displayName = (this.editForm.name || this.profile.name || 'Agent').trim();
+    const payload: {
+      userId: number;
+      username?: string;
+      displayName: string;
+      avatar: string;
+      bio: string;
+    } = {
       userId: this.userId,
-      username: (this.editForm.name || this.profile.name || 'Agent').trim(),
-      displayName: (this.editForm.name || this.profile.name || 'Agent').trim(),
+      displayName,
       avatar: this.editForm.avatar || this.profile.avatar,
       bio: (this.editForm.bio ?? this.profile.bio ?? 'Silent, precise, and always one step ahead.').trim()
     };
+
+    if (this.currentUsername) {
+      payload.username = this.currentUsername.trim();
+    }
 
     this.profileService.updateProfile(payload).subscribe({
       next: response => {

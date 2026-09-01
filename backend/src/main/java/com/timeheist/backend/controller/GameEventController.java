@@ -1,19 +1,24 @@
 package com.timeheist.backend.controller;
 
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.timeheist.backend.dto.ApiResponse;
 import com.timeheist.backend.dto.CreateGameEventRequest;
 import com.timeheist.backend.dto.GameEventStatsResponse;
 import com.timeheist.backend.dto.GameScoreResponse;
 import com.timeheist.backend.entity.GameEvent;
 import com.timeheist.backend.service.GameEventService;
+import com.timeheist.backend.service.GameSessionService;
 
 import jakarta.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/game/sessions")
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class GameEventController {
 
     private final GameEventService gameEventService;
+        private final GameSessionService gameSessionService;
 
 
     // CREATE GAME EVENT
@@ -67,6 +73,12 @@ public class GameEventController {
     @GetMapping("/{sessionId}/events/score")
     public ResponseEntity<ApiResponse<GameScoreResponse>> getScore(
             @PathVariable Long sessionId) {
+
+        if (gameSessionService.getGameSession(sessionId).getFinalScore() == null) {
+            throw new IllegalStateException(
+                    "A score is only available for won game sessions."
+            );
+        }
 
         GameScoreResponse score =
                 gameEventService.calculateScore(sessionId);

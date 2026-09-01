@@ -300,7 +300,7 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.sessionFinished = true;
     this.pendingFinishResult = null;
 
-    this.gameSessionApiService.finishGame(this.activeSessionId).subscribe({
+    this.gameSessionApiService.finishGame(this.activeSessionId, result).subscribe({
       next: () => {
         if (result === 'won') {
           this.isScoreLoading = true;
