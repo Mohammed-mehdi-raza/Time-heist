@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://time-heist.onrender.com/api'
+  apiUrl: 'https://time-heist-latest.onrender.com/api'
 };
