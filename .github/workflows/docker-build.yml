@@ -42,3 +42,7 @@ jobs:
         run: |
           docker push \
             ${{ secrets.DOCKER_USERNAME }}/time_heist:latest
+
+      - name: Deploy to Render
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
