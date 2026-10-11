@@ -1,5 +1,6 @@
 package com.timeheist.backend.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,10 @@ public interface GameSessionRepository extends JpaRepository<GameSession, Long> 
     Optional<GameSession> findByIdAndUserId(Long id, Long userId);
     
     List<GameSession> findByUserIdOrderByStartedAtDesc(Long userId);
+    
+    List<GameSession> findTop10ByUserIdAndFinalScoreIsNotNullOrderByFinalScoreDesc(Long userId);
+    
+    List<GameSession> findTop10ByFinalScoreIsNotNullOrderByFinalScoreDesc();
+    
+    List<GameSession> findTop10ByFinalScoreIsNotNullAndEndedAtAfterOrderByFinalScoreDesc(LocalDateTime time);
 }
