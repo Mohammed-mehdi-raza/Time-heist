@@ -5,6 +5,7 @@ import { HowToPlayComponent } from './how-to-play/how-to-play.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ProfileComponent } from './profile/profile.component';
 import { authGuard } from '../core/guards/auth.guard';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const routes: Routes = [
   { path: '', component: AuthParentComponent },
@@ -12,6 +13,11 @@ const routes: Routes = [
     path: 'howToPlay',
     canActivate: [authGuard],
     component: HowToPlayComponent,
+  },
+  {
+    path: 'leaderboard',
+    canActivate: [authGuard],
+    component: LeaderboardComponent,
   },
   { path: 'about-us', canActivate: [authGuard], component: AboutUsComponent },
   { path: 'profile', canActivate: [authGuard], component: ProfileComponent },
