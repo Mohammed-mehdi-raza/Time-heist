@@ -26,6 +26,8 @@ public class GameSessionService {
     private UserRepository userRepository;
 	@Autowired
     private GameEventService gameEventService;
+	@Autowired
+	private LeaderBoardRedisService leaderBoardRedisService;
 
     @Transactional
     public GameSession startGame(Long userId, Long mapId) {
@@ -74,35 +76,46 @@ public class GameSessionService {
     }
 
     @Transactional
-        public GameSession finishGame(Long sessionId, String result) {
-
-        GameSession session = gameSessionRepository.findById(sessionId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Game session with ID " + sessionId
-                                        + " does not exist."
-                        )
-                );
-
-        if (!"RUNNING".equals(session.getStatus())) {
-            throw new IllegalStateException(
-                    "Game session is already finished."
-            );
+    public GameSession finishGame(Long sessionId, String result) {
+	
+	    GameSession session = gameSessionRepository.findById(sessionId)
+	            .orElseThrow(() ->
+	                    new ResourceNotFoundException(
+	                            "Game session with ID " + sessionId
+	                                    + " does not exist."
+	                    )
+	            );
+	
+	    if (!"RUNNING".equals(session.getStatus())) {
+	        throw new IllegalStateException(
+	                "Game session is already finished."
+	        );
+	    }
+	
+        if (!"won".equalsIgnoreCase(result) && !"lost".equalsIgnoreCase(result)) {
+                throw new IllegalArgumentException("Game result must be 'won' or 'lost'.");
         }
-
-                if (!"won".equalsIgnoreCase(result) && !"lost".equalsIgnoreCase(result)) {
-                        throw new IllegalArgumentException("Game result must be 'won' or 'lost'.");
-                }
-
-        LocalDateTime endedAt = LocalDateTime.now();
-        session.setEndedAt(endedAt);
-        session.setStatus("COMPLETED");
-
-                if ("won".equalsIgnoreCase(result)) {
-                        GameScoreResponse score = gameEventService.calculateScore(sessionId);
-                        session.setFinalScore(score.getTotalScore());
-                }
-
-        return gameSessionRepository.save(session);
+	
+	    LocalDateTime endedAt = LocalDateTime.now();
+	    session.setEndedAt(endedAt);
+	    session.setStatus("COMPLETED");
+	
+        if ("won".equalsIgnoreCase(result)) {
+                GameScoreResponse score = gameEventService.calculateScore(sessionId);
+                session.setFinalScore(score.getTotalScore());
+                leaderBoardRedisService.addOrUpdateGlobalScore(session.getUser().getId(), score.getTotalScore());
+                leaderBoardRedisService.add24HourScore(
+                        session.getId(),
+                        score.getTotalScore(),
+                        session.getEndedAt()
+                );
+                leaderBoardRedisService.addUserScore(
+                        session.getUser().getId(),
+                        session.getId(),
+                        score.getTotalScore()
+                );
+        }
+	
+	    return gameSessionRepository.save(session);
     }
 }

@@ -27,6 +27,10 @@ export class HomeComponent {
     this.router.navigate(['/howToPlay']);
   }
 
+  leaderboard(): void {
+    this.router.navigate(['/leaderboard']);
+  }
+
   aboutUs(): void {
     this.router.navigate(['/about-us']);
   }

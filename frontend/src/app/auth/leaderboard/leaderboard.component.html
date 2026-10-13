@@ -1,0 +1,81 @@
+<div class="leaderboard-container">
+  <div class="leaderboard-wrapper">
+    <!-- Navigation Tabs / Filters -->
+    <div class="leaderboard-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'global'"
+        (click)="switchTab('global')"
+      >
+        <i class="fas fa-globe"></i> Global Top 10
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'last24h'"
+        (click)="switchTab('last24h')"
+      >
+        <i class="fas fa-clock"></i> Last 24 Hours
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'user'"
+        (click)="switchTab('user')"
+      >
+        <i class="fas fa-user"></i> Your Top 10 Scores
+      </button>
+    </div>
+
+    <!-- Error Message -->
+    <div class="alert error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <div class="cyber-spinner"></div>
+      <span>Accessing Grid Data...</span>
+    </div>
+
+    <!-- Leaderboard Table Container -->
+    <div class="table-container" *ngIf="!isLoading">
+      <table
+        class="cyber-table"
+        *ngIf="leaderboardData.length > 0; else noData"
+      >
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of leaderboardData; let i = index"
+            [class.top-three]="i < 3"
+          >
+            <td class="rank-cell">
+              <span
+                class="rank-badge"
+                [ngClass]="{ gold: i === 0, silver: i === 1, bronze: i === 2 }"
+              >
+                {{ i + 1 }}
+              </span>
+            </td>
+            <td class="user-cell">
+              <span class="username">{{ item.username || "Agent" }}</span>
+            </td>
+            <td class="score-cell">{{ item.score | number }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <ng-template #noData>
+        <div class="empty-state" *ngIf="!isLoading">
+          <p>No records found in this sector.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
